@@ -1,37 +1,43 @@
-@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;1,100;1,200;1,300;1,500;1,600;1,700&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;1,100;1,200;1,300;1,500;1,600;1,700&display=swap");
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-@layer base{
-    .box{
-        @apply max-w-6xl mx-auto
-    }
-    body{
-        @apply font-body bg-light 
-    }
-    .btn{
-        @apply text-sm bg-primary text-white rounded-md py-2 px-4 my-3
-        
-    }
-    .danger{
-          @apply text-sm bg-danger text-white rounded-md py-2 px-4 
-    }
-    .formBox{
-        @apply my-2
-    }
-    input{
-        @apply text-sm outline-0 border-b-2 py-2 w-full focus:border-primary transition ease-in-out
-    }
-    textarea{
-        @apply text-sm resize-none border-2 w-full h-32 outline-0 rounded-md py-2 focus:border-primary transition ease-in-out
-    }
-    .tags{
-        @apply text-white text-xs bg-gray-500 py-1 px-2.5 rounded-3xl mr-1
-    }
-    .btn-grad{
-        @apply ml-[10px] py-[10px] px-[30px] text-[16px] text-center rounded-[10px] bg-gradient-to-r from-purple-500 to-pink-500
-    }
-    .navItems{
-        @apply mx-[10px] text-[16px]
-    }
+@layer base {
+  .box {
+    @apply max-w-6xl mx-auto;
+  }
+  body {
+    @apply font-body bg-darkBg;
+  }
+  .btn {
+    @apply text-sm bg-mainColor text-white rounded-md py-4 px-4 my-3;
+  }
+  .danger {
+    @apply text-sm bg-danger text-white rounded-md py-2 px-4;
+  }
+  .formBox {
+    @apply my-2;
+  }
+  
+  textarea {
+    @apply text-sm resize-none border-2 w-full h-32 outline-0 rounded-md py-2 focus:border-primary transition ease-in-out;
+  }
+  .tags {
+    @apply text-white text-xs bg-gray-500 py-1 px-2.5 rounded-3xl mr-1;
+  }
+  .btn-grad {
+    @apply ml-[10px] py-[10px] px-[30px] text-[16px] text-center rounded-[10px] bg-mainColor;
+  }
+  .navItems {
+    @apply mx-[10px] text-[16px];
+  }
+  .custom-input {
+    @apply bg-lightBg text-[16px] text-white text-sm outline-0 w-full focus:border-2 transition ease-in-out border-mainColor border p-[16px] rounded-sm placeholder:text-primaryText1 placeholder:text-[12px];
+  }
+  .btn-gray{
+    @apply bg-white text-black;
+  }
+  .btn-danger{
+    @apply bg-red-600 m-0 py-[10px] px-[20px];
+  }
 }
