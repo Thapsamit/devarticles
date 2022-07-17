@@ -7,7 +7,7 @@ import { useDispatch } from "react-redux";
 
 const Navbar = () => {
   const [user, setUser] = useState(JSON.parse(localStorage.getItem("profile")));
-  console.log(user);
+  
   const dispatch = useDispatch();
   const location = useLocation();
   const history = useHistory();

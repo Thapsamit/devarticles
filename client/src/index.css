@@ -40,4 +40,7 @@
   .btn-danger{
     @apply bg-red-600 m-0 py-[10px] px-[20px];
   }
+  .customHeadings{
+    @apply text-primaryText3 text-xl;
+  }
 }

@@ -1,108 +1,128 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   HiUserCircle,
   HiOutlineThumbUp,
   HiOutlineTrash,
   HiThumbUp,
 } from "react-icons/hi";
-import { MdOutlineComment } from "react-icons/md";
+import { MdOutlineInsertComment } from "react-icons/md";
 import { BsPencilSquare } from "react-icons/bs";
 import { useHistory } from "react-router-dom";
 import moment from "moment";
 import { useDispatch } from "react-redux";
 import { deleteArticle, likeArticle } from "../../../actions/articles";
-import { Link } from "react-router-dom";
-const Article = ({ article, setCurrentId }) => {
+
+const Article = ({ article }) => {
+  const [likes, setLikes] = useState(article?.likes);
   const history = useHistory();
   const dispatch = useDispatch();
   const user = JSON.parse(localStorage.getItem("profile"));
+  const userId = user?.result?._id;
+  const hasLiked = likes.find((like) => like === userId);
+
   const getArticle = () => {
     history.push(`/articles/${article._id}`);
   };
+  const handleLikeClick = async () => {
+    dispatch(likeArticle(article._id));
+    if (hasLiked) {
+    
+      setLikes(likes.filter((id) => id !== userId));
+    } else {
 
+      setLikes([...likes, userId]);
+    }
+  };
   const Likes = () => {
-    if (article?.likes.length >= 0) {
-      return article.likes.find((like) => like === user?.result?._id) ? (
-        <div className="flex items-center text-primary  cursor-pointer">
+    if (likes.length >= 0) {
+      return likes.find((like) => like === userId) ? (
+        <div className="flex items-center  text-mainColor cursor-pointer">
           <HiThumbUp className="w-[20px] h-[20px] mr-[5px]" />
-          <p className="text-primary">
-            You and {article.likes.length - 1} Liked
-          </p>
+          <p className="text-mainColor">Like {likes.length}</p>
         </div>
       ) : (
-        <div className="flex items-center hover:text-primary cursor-pointer">
+        <div className="flex items-center text-primaryText2 hover:text-mainColor cursor-pointer">
           <HiOutlineThumbUp className="w-[20px] h-[20px] mr-[5px]" />
-          <p>Like {article.likes.length}</p>
+          <p>Like {likes.length}</p>
         </div>
       );
     }
   };
   return (
     <>
-      <div className="bg-white shadow-md w-[300px] rounded-lg overflow-hidden m-2">
-        <div className="h-52 relative bg-no-repeat bg-cover bg-center object-cover bg-blend-overlay">
-          {user?.result?._id === article?.author && (
-             <button
-              onClick={(e) => {
-                e.stopPropagation();
-                history.push(`/editArticle/${article._id}`)
-                //setCurrentId(article._id);
-              }}
-              className="absolute top-1 left-3"
-            >
-              <BsPencilSquare className="text-primary text-[30px]" />
-            </button> 
-          )}
-          <img
-            src={article.selectedFile}
-            className="w-full h-full"
-            alt="Article"
-          />
-        </div>
-        <div className="py-2.5 px-4">
-          <div className="my-1 mx-0">
-            {article.tags.map((tag, idx) => (
-              <span className="tags">#{tag}</span>
-            ))}
+      <div className="bg-lightBg shadow-md rounded-lg overflow-hidden my-[10px] w-full">
+        <div className="flex p-[10px] h-[250px]">
+          <div className="w-[30%] mr-[20px]">
+            <img
+              src={article.selectedFile}
+              className="w-full h-full rounded"
+              alt="Article"
+            />
           </div>
-          <button onClick={getArticle}>
-            <h4 className="text-sm text-primary my-2.5 mx-0">
-              {article.title}
-            </h4>
-          </button>
+          <div className="text-xl w-[70%]">
+            <div className="flex justify-between">
+              <button onClick={getArticle}>
+                <h3 className="text-mainColor underline"> {article.title}</h3>
+              </button>
 
-          <p className="text-[12px] my-[10px]">{article.articleBody}</p>
-          <div className="flex items-center my-4 mx-0">
-            <HiUserCircle className="w-[40px] h-[40px] mr-[16px]" />
-            <div className="text-[12px] font-medium">
-              <p>{article.name}</p>
-              <p>Posted on Date : {moment(article.createdAt).fromNow()}</p>
+              {user?.result?._id === article?.author && (
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    history.push(`/editArticle/${article._id}`);
+                    //setCurrentId(article._id);
+                  }}
+                >
+                  <BsPencilSquare className="text-mainColor text-[20px]" />
+                </button>
+              )}
             </div>
-          </div>
-          <div className="flex justify-between items-center mt-[10px] py-[10px] px-0 border-t-[1px] border-gray-500 border-solid  ">
-            <button
-              disabled={!user?.result}
-              onClick={() => dispatch(likeArticle(article._id))}
-            >
-              <Likes />
-            </button>
-            <div className="flex items-center hover:text-yellow-300 cursor-pointer">
-              <MdOutlineComment className="w-[20px] h-[20px] mr-[5px]" />
-              <p>Comment</p>
+
+            <p className="text-white text-[12px] py-[5px]">
+              {article.articleBody}
+            </p>
+            <div className="my-1 mx-0">
+              {article.tags.map((tag, idx) => (
+                <span key={idx} className="tags" >#{tag}</span>
+              ))}
             </div>
-            {user?.result?._id === article?.author && (
-              <div
-                className="flex items-center hover:text-red-500 cursor-pointer"
-                onClick={() => {
-                  dispatch(deleteArticle(article._id));
-                }}
-              >
-                <HiOutlineTrash className="w-[20px] h-[20px] mr-[5px]" />
-                <p>Delete</p>
+            <div className="flex items-center my-4 mx-0 text-white">
+              <HiUserCircle className="w-[40px] h-[40px] mr-[16px]" />
+              <div className="text-[12px] font-medium">
+                <p>{article.name}</p>
+                <p className="text-primaryText2">
+                  Posted on Date : {moment(article.createdAt).fromNow()}
+                </p>
               </div>
-            )}
+            </div>
+
+            <div className="flex items-center text-[15px] mt-[10px] py-[10px] px-0 border-t-[1px] border-gray-500 border-solid  ">
+              <button
+                disabled={!user?.result}
+                onClick={handleLikeClick}
+                className="mr-[20px]"
+              >
+                <Likes />
+              </button>
+              <MdOutlineInsertComment className="w-[20px] h-[20px] mr-[5px] text-yellow-500"/>
+              <p className="text-yellow-500 mr-[10px]">Comments {article?.comments.length} </p>
+
+
+              {user?.result?._id === article?.author && (
+                <div
+                  className="flex items-center hover:text-red-500 cursor-pointer"
+                  onClick={() => {
+                    dispatch(deleteArticle(article._id));
+                  }}
+                >
+                  <HiOutlineTrash className="w-[20px] h-[20px] mr-[5px] text-red-500" />
+                  <p className="text-red-500">Delete</p>
+                </div>
+              )}
+            </div>
           </div>
         </div>
+        
       </div>
     </>
   );

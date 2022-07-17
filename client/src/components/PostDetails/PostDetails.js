@@ -1,24 +1,44 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useParams } from "react-router-dom";
+import { HiOutlineThumbUp, HiOutlineTrash, HiThumbUp } from "react-icons/hi";
+import moment from "moment";
+import { useHistory, useParams } from "react-router-dom";
 import { getArticle } from "../../actions/articles";
 import { HiUserCircle } from "react-icons/hi";
+import { likeArticle, deleteArticle } from "../../actions/articles";
 
-import moment from "moment";
-import  CommentSection  from "./CommentSection";
+import CommentSection from "./CommentSection";
 const PostDetails = () => {
-  const { article, isLoading } = useSelector(
+  const { article, articles, isLoading } = useSelector(
     (state) => state.articles
   );
-  console.log(article);
- 
+
+  const history = useHistory();
+  const user = JSON.parse(localStorage.getItem("profile"));
+  const userId = user?.result?._id;
+
   const { id } = useParams();
   const dispatch = useDispatch();
 
+  const Likes = () => {
+    if (article?.likes?.length >= 0) {
+      return article.likes.find((like) => like === userId) ? (
+        <div className="flex items-center  text-mainColor cursor-pointer">
+          <HiThumbUp className="w-[20px] h-[20px] mr-[5px]" />
+          <p className="text-mainColor">Like {article.likes.length}</p>
+        </div>
+      ) : (
+        <div className="flex items-center text-primaryText2 hover:text-mainColor cursor-pointer">
+          <HiOutlineThumbUp className="w-[20px] h-[20px] mr-[5px]" />
+          <p>Like {article.likes.length}</p>
+        </div>
+      );
+    }
+  };
+
   useEffect(() => {
     dispatch(getArticle(id));
-  }, [dispatch,id]);
- 
+  }, [dispatch, id]);
 
   if (isLoading)
     return (
@@ -29,27 +49,79 @@ const PostDetails = () => {
   return (
     <>
       {article && (
-        <div className="box">
-          <div className="w-full">
-            <div>
-              <h1>{article.title}</h1>
-            </div>
+        <div className="box mb-[20px]">
+          <div className="flex justify-between mt-[20px]">
+            <div className="bg-lightBg w-full mr-[20px] rounded py-[10px] px-[30px]">
+              <div className="flex items-center my-4 mx-0 text-white">
+                <HiUserCircle className="w-[40px] h-[40px] mr-[16px]" />
+                <div className="text-[12px] font-medium">
+                  <p>{article.name}</p>
+                  <p className="text-primaryText2">
+                    Posted on Date : {moment(article.createdAt).fromNow()}
+                  </p>
+                </div>
+              </div>
+              <h3 className="text-mainColor text-[1.5rem] my-[10px]">
+                {article.title}
+              </h3>
+              <div className="w-full mr-[20px]">
+                <img
+                  src={article.selectedFile}
+                  className="w-full h-[50vh] rounded"
+                  alt="Article"
+                />
+              </div>
+              <div className="my-2 mx-0">
+                {article.tags.map((tag, idx) => (
+                  <span key={idx} className="tags">#{tag}</span>
+                ))}
+              </div>
 
-            <img src={article.selectedFile} alt="Article"/>
-            <div className="my-1 mx-0">
-              {article.tags.map((tag, idx) => (
-                <span className="tags">#{tag}</span>
-              ))}
-            </div>
-            <h1>{article.articleBody}</h1>
-            <div className="flex items-center my-4 mx-0">
-              <HiUserCircle className="w-[40px] h-[40px] mr-[16px]" />
-              <div className="text-[12px] font-medium">
-                <p>{article.name}</p>
-                <p>Posted on Date : {moment(article.createdAt).fromNow()}</p>
+              <div className="py-[10px] mb-[20px]">
+                <p className="text-primaryText2">{article.articleBody}</p>
+              </div>
+
+              <div className="flex  items-center text-[15px] mt-[10px] py-[10px] px-0 border-t-[1px] border-gray-500 border-solid  ">
+                <button
+                  disabled={!user?.result}
+                  onClick={() => dispatch(likeArticle(article._id))}
+                  className="mr-[20px]"
+                >
+                  <Likes />
+                </button>
+
+                {user?.result?._id === article?.author && (
+                  <div
+                    className="flex items-center hover:text-red-500 cursor-pointer"
+                    onClick={() => {
+                      dispatch(deleteArticle(article._id))
+                        .then(() => {
+                          history.push("/articles");
+                        })
+                        .catch((err) => console.log(err));
+                    }}
+                  >
+                    <HiOutlineTrash className="w-[20px] h-[20px] mr-[5px] text-red-500" />
+                    <p className="text-red-500">Delete</p>
+                  </div>
+                )}
+              </div>
+
+              <div className="py-[20px]">
+                <h4 className="text-mainColor text-[1.5rem]">
+                  Comment Section {`(${article?.comments.length})`}
+                </h4>
+                <div>
+                  <CommentSection article={article} />
+                </div>
               </div>
             </div>
-            <CommentSection article={article} />
+
+            <div className="">
+              <h2 className="customHeadings text-[14px]">
+                Recommended Posts For You..
+              </h2>
+            </div>
           </div>
         </div>
       )}

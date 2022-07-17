@@ -1,18 +1,20 @@
 import FileBase64 from "react-file-base64";
-import { useState,useEffect } from "react";
-import { createArticle,updateArticle } from "../../actions/articles";
+import { useState, useEffect } from "react";
+import { createArticle, updateArticle } from "../../actions/articles";
 import { useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
 import { useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
+import categories from '../../categories.json'
 const WriteArticle = () => {
   const [articleData, setArticleData] = useState({
     title: "",
     articleBody: "",
     tags: "",
     selectedFile: "",
+    category:""
   });
-  const{id} = useParams();
+  const { id } = useParams();
 
   const article = useSelector((state) =>
     id ? state.articles.articles.find((p) => p._id === id) : null
@@ -29,16 +31,17 @@ const WriteArticle = () => {
   const user = JSON.parse(localStorage.getItem("profile"));
   const handleSubmit = (e) => {
     e.preventDefault();
-    if(id){
-      console.log("update triggered")
+    if (id) {
+      console.log("update triggered");
       dispatch(updateArticle(id, { ...articleData, name: user?.result?.name }));
-    }
-    else{
+    } else {
       dispatch(createArticle({ ...articleData, name: user?.result?.name }));
     }
     clear(e);
     console.log(articleData);
-    history.push('/articles');
+    setTimeout(() => {
+      history.push("/articles");
+    }, 1000);
   };
   const clear = (e) => {
     e.preventDefault();
@@ -46,7 +49,6 @@ const WriteArticle = () => {
   };
 
   const getFiles = (files) => {
-
     setArticleData({ ...articleData, selectedFile: files.base64 });
   };
   return (
@@ -96,6 +98,20 @@ const WriteArticle = () => {
                   }
                 />
               </div>
+              <div>
+                <select
+                  
+                  className="outline-none bg-lightBg p-[16px] text-primaryText1 text-[12px] rounded block w-full border border-mainColor focus:border-2"
+                  onChange={(e)=>setArticleData({...articleData,category:e.target.value})}
+                >
+                  <option>Select Category</option>
+                  {categories.categories.map((category,ind)=>(
+                      <option key={ind} value={category}>{category}</option>
+                  ))}
+                  
+                </select>
+              </div>
+
               <div className="bg-lightBg my-[15px]  border-2 border-mainColor border-dashed p-[20px]">
                 <FileBase64 multiple={false} onDone={getFiles} />
               </div>

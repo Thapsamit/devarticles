@@ -10,6 +10,7 @@ import { BrowserRouter, Switch, Route,Redirect } from 'react-router-dom';
 const App = ()=>{
    
    const user = JSON.parse(localStorage.getItem('profile'));
+   
     return(
         <>
      <BrowserRouter>
@@ -18,6 +19,7 @@ const App = ()=>{
          <Route path="/" exact component = {()=><Redirect to="/articles"/>} />
          <Route path ="/articles" exact component = {Home}/>
          <Route path="/articles/search" exact component = {Home}/>
+         <Route path="/articles/categories" exact component = {Home}/>
          <Route path = "/articles/:id" exact component = {PostDetails}/>
          <Route path='/auth' component={()=>(!user ? <Auth/>: <Redirect to ="/articles"/>)}/>
          <Route path="/writeArticle" component={WriteArticle}/>

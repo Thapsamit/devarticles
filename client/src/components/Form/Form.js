@@ -17,13 +17,14 @@ const Form = ({ currentId, setCurrentId }) => {
   const dispatch = useDispatch();
   const user = JSON.parse(localStorage.getItem("profile"));
   useEffect(() => {
+    
     if (article) {
       setArticleData(article);
     }
   }, [article]);
   const handleSubmit = (e) => {
     e.preventDefault();
-    clear();
+   
     if (currentId) {
       dispatch(
         updateArticle(currentId, { ...articleData, name: user?.result?.name })

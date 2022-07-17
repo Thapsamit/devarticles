@@ -8,17 +8,18 @@ import {
   START_LOADING,
   END_LOADING,
   FETCH_ARTICLE,
+  COMMENT,
+  LIKE,
+  FETCH_BY_CATEGORY
 } from "../constants/actionTypes";
 //Action creators
 //asynchronus approach
 export const getArticle = (id) => async (dispatch) => {
   try {
     dispatch({ type: START_LOADING });
-    const {
-      data
-    } = await api.fetchArticle(id);
-    console.log(data);
-    dispatch({ type: FETCH_ARTICLE, payload: { article:data } });
+    const { data } = await api.fetchArticle(id);
+
+    dispatch({ type: FETCH_ARTICLE, payload: { article: data } });
     dispatch({ type: END_LOADING });
   } catch (err) {
     console.log(err.message);
@@ -63,13 +64,26 @@ export const deleteArticle = (id) => async (dispatch) => {
   }
 };
 export const likeArticle = (id) => async (dispatch) => {
+  const user = JSON.parse(localStorage.getItem("profile"));
   try {
-    const { data } = await api.likeArticle(id);
-    dispatch({ type: UPDATE, payload: { data } });
+    const {data}  = await api.likeArticle(id, user?.token);
+    dispatch({ type: LIKE, payload: data });
   } catch (err) {
     console.log(err);
   }
 };
+
+export const commentArticle = (com, id) => async (dispatch) => {
+  try {
+    const { data } = await api.comment(com, id);
+   
+    dispatch({ type: COMMENT, payload: data });
+    return data.comments;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 export const getArticlesBySearch = (searchQuery) => async (dispatch) => {
   try {
     dispatch({ type: START_LOADING });
@@ -83,3 +97,15 @@ export const getArticlesBySearch = (searchQuery) => async (dispatch) => {
     console.log(err);
   }
 };
+
+export const getArticlesByCategory = (category)=> async(dispatch)=>{
+  try{
+    dispatch({ type: START_LOADING });
+    const {data} = await api.fetchByCategory(category);
+    dispatch({type:FETCH_BY_CATEGORY,payload:data})
+    dispatch({type:END_LOADING});
+  }
+  catch(err){
+   console.log(err)
+  }
+}
