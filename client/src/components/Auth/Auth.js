@@ -33,9 +33,7 @@ const Auth = () => {
     const token = res.credential;
     const result =  {name,picture,email,sub};
     await dispatch({type:AUTH , data:{result,token}})
-    
     history.push('/');
-    
   };
   const googleFailure = (err) => {
     console.log(err);
