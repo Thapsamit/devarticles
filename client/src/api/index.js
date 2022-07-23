@@ -21,7 +21,7 @@ export const updateArticle = (id,updatedArticle)=>API.patch(`/articles/${id}`,up
 export const deleteArticle = (id)=>API.delete(`/articles/${id}`)
 export const  likeArticle = (id)=>API.patch(`/articles/${id}/likeArticle`);
 export const comment = (com,id)=>API.post(`/articles/${id}/commentArticle`,{com})
-
+export const addBookmark = (id)=>API.patch(`/articles/bookmark/${id}`);
 
 export const signIn = (formData)=>API.post('/users/signIn',formData)
 export const signUp = (formData)=>API.post('/users/signUp',formData)

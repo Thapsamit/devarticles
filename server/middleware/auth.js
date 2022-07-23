@@ -11,11 +11,13 @@ const auth = async(req,res,next)=>{
 	    if(token&&isCustomAuth){
 	    	decodedData = jwt.verify(token,'test')
 	    	req.userId = decodedData?.id;
+		
 	    }
 	    else{
 	    	//for google auth token decode
-	    	//decodedData = jwt.decode(token)
-	    	//req.userId = decodedData?.sub
+	    	decodedData = jwt.decode(token)
+	    	req.userId = decodedData?.sub
+			
 	    }
 	    next()
 	} catch(e) {

@@ -43,4 +43,26 @@
   .customHeadings{
     @apply text-primaryText3 text-xl;
   }
+  .loaderContainer{
+    @apply flex h-[100px] justify-center items-center
+  }
+  .loaderBar{
+    @apply bg-primaryText2 w-[8px] h-[20px] m-[4px] rounded
+  }
+  .loaderBar1{
+    @apply animate-loaderBar1 
+  }
+  .loaderBar2{
+    @apply animate-loaderBar2
+  }
+  .loaderBar3{
+    @apply animate-loaderBar3 
+  }
+  .loaderBar4{
+    @apply animate-loaderBar4
+  }
+  .loaderBar5{
+    @apply animate-loaderBar5
+  }
+
 }

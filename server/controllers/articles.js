@@ -1,4 +1,5 @@
 import postArticle from "../models/postArticles.js";
+import users from "../models/users.js";
 import mongoose from "mongoose";
 
 export const getArticle = async (req, res) => {
@@ -124,3 +125,22 @@ export const commentArticle = async (req, res) => {
   });
   return res.status(200).json(updatingArticle);
 };
+
+// bookmark feature
+export const addBookmark = async (req,res)=>{
+  const {id} = req.params;
+  if (!mongoose.Types.ObjectId.isValid(id)) {
+    return res.status(404).send("No Post with this id");
+  }
+  const getUser = await users.findById(req.userId)
+  const index = getUser.bookmarks.findIndex((bid)=> bid==id)
+  if(index==-1){
+    getUser.bookmarks.unshift(id);
+    const updatingUser = await users.findByIdAndUpdate(req.userId,getUser,{new:true})
+    res.status(200).send(updatingUser);
+  }
+  else{
+    res.status(200).send("already addded")
+  }
+  
+}

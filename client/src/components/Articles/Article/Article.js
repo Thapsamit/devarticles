@@ -5,31 +5,48 @@ import {
   HiOutlineTrash,
   HiThumbUp,
 } from "react-icons/hi";
+
+import { BsFillBookmarkCheckFill, BsBookmarkPlus } from "react-icons/bs";
 import { MdOutlineInsertComment } from "react-icons/md";
 import { BsPencilSquare } from "react-icons/bs";
 import { useHistory } from "react-router-dom";
 import moment from "moment";
 import { useDispatch } from "react-redux";
-import { deleteArticle, likeArticle } from "../../../actions/articles";
+import {
+  deleteArticle,
+  likeArticle,
+  addingBookmark,
+} from "../../../actions/articles";
 
 const Article = ({ article }) => {
   const [likes, setLikes] = useState(article?.likes);
   const history = useHistory();
   const dispatch = useDispatch();
   const user = JSON.parse(localStorage.getItem("profile"));
-  const userId = user?.result?._id;
+  const userId = user?.result?._id || user?.result?.sub;
   const hasLiked = likes.find((like) => like === userId);
 
+  const formattedArticleBody = (str) => {
+    if (str.length > 100) {
+      let reducedStr = str.substring(0, 101);
+      reducedStr += "...";
+      return reducedStr;
+    } else {
+      return str;
+    }
+  };
   const getArticle = () => {
     history.push(`/articles/${article._id}`);
+  };
+  const addBookmark = (e) => {
+    e.preventDefault();
+    dispatch(addingBookmark(article._id));
   };
   const handleLikeClick = async () => {
     dispatch(likeArticle(article._id));
     if (hasLiked) {
-    
       setLikes(likes.filter((id) => id !== userId));
     } else {
-
       setLikes([...likes, userId]);
     }
   };
@@ -51,7 +68,7 @@ const Article = ({ article }) => {
   return (
     <>
       <div className="bg-lightBg shadow-md rounded-lg overflow-hidden my-[10px] w-full">
-        <div className="flex p-[10px] h-[250px]">
+        <div className="flex p-[10px]">
           <div className="w-[30%] mr-[20px]">
             <img
               src={article.selectedFile}
@@ -65,12 +82,12 @@ const Article = ({ article }) => {
                 <h3 className="text-mainColor underline"> {article.title}</h3>
               </button>
 
-              {user?.result?._id === article?.author && (
+              {(user?.result?._id === article?.author ||
+                user?.result?.sub === article?.author) && (
                 <button
                   onClick={(e) => {
                     e.stopPropagation();
                     history.push(`/editArticle/${article._id}`);
-                    //setCurrentId(article._id);
                   }}
                 >
                   <BsPencilSquare className="text-mainColor text-[20px]" />
@@ -79,11 +96,13 @@ const Article = ({ article }) => {
             </div>
 
             <p className="text-white text-[12px] py-[5px]">
-              {article.articleBody}
+              {formattedArticleBody(article.articleBody)}
             </p>
             <div className="my-1 mx-0">
               {article.tags.map((tag, idx) => (
-                <span key={idx} className="tags" >#{tag}</span>
+                <span key={idx} className="tags">
+                  #{tag}
+                </span>
               ))}
             </div>
             <div className="flex items-center my-4 mx-0 text-white">
@@ -104,11 +123,25 @@ const Article = ({ article }) => {
               >
                 <Likes />
               </button>
-              <MdOutlineInsertComment className="w-[20px] h-[20px] mr-[5px] text-yellow-500"/>
-              <p className="text-yellow-500 mr-[10px]">Comments {article?.comments.length} </p>
+              <MdOutlineInsertComment className="w-[20px] h-[20px] mr-[5px] text-yellow-500" />
+              <p className="text-yellow-500 mr-[20px]">
+                Comments {article?.comments.length}{" "}
+              </p>
+              {user?.result?._id && (
+                <button
+                  disabled={!user?.result}
+                  onClick={addBookmark}
+                  className="mr-[20px]"
+                >
+                  <div className="flex items-center justify-center">
+                    <BsBookmarkPlus className="text-primaryText2 w-[20px] h-[20px] mr-[5px]" />
+                    <p className=" text-primaryText2">Bookmark</p>
+                  </div>
+                </button>
+              )}
 
-
-              {user?.result?._id === article?.author && (
+              {(user?.result?._id === article?.author ||
+                user?.result?.sub === article?.author) && (
                 <div
                   className="flex items-center hover:text-red-500 cursor-pointer"
                   onClick={() => {
@@ -122,7 +155,6 @@ const Article = ({ article }) => {
             </div>
           </div>
         </div>
-        
       </div>
     </>
   );

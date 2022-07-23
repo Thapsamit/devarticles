@@ -24,6 +24,20 @@ module.exports = {
       },
       backgroundImage:{
         bgGrad:'linear-gradient(to right, #fc00ff 0%, #00dbde  51%, #fc00ff  100%)'
+      },
+      animation:{
+         loaderBar1: 'loaderBar 1s ease-in-out infinite',
+         loaderBar2: 'loaderBar 1s ease-in-out infinite 0.1s',
+         loaderBar3: 'loaderBar 1s ease-in-out infinite 0.2s',
+         loaderBar4: 'loaderBar 1s ease-in-out infinite 0.3s',
+         loaderBar5: 'loaderBar 1s ease-in-out infinite 0.4s'
+      },
+      keyframes:{
+          loaderBar:{
+            '0%': {height:'20px'},
+            '50%':{height:'70px'},
+            '100%':{height:'20px'}
+          }
       }
     },
   },

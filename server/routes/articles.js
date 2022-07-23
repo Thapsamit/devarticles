@@ -8,7 +8,8 @@ import {
   likeArticle,
   getArticle,
   commentArticle,
-  getArticlesByCategory
+  getArticlesByCategory,
+  addBookmark
 } from "../controllers/articles.js";
 import auth from "../middleware/auth.js";
 const router = express.Router();
@@ -22,5 +23,5 @@ router.patch("/:id", auth, updateArticle); // same for update
 router.delete("/:id", auth, deleteArticle);
 router.patch("/:id/likeArticle", auth, likeArticle);
 router.post('/:id/commentArticle',auth,commentArticle);
-
+router.patch('/bookmark/:id',auth,addBookmark);
 export default router;

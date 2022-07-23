@@ -12,16 +12,22 @@ function useQuery() {
 }
 
 const Home = () => {
-  //const[currentId,setCurrentId] = useState(null);
+ 
   const [search, setSearch] = useState("");
+
+ 
   const query = useQuery();
   const category = query.get("category");
   const history = useHistory();
   
+
+ 
+  
+  
   //const query = useQuery();
   //const searchQuery = query.get('searchQuery')
   const dispatch = useDispatch();
-  console.log(category);
+  
   
   
 
@@ -36,11 +42,13 @@ const Home = () => {
 
   const handleKeyPress = (e) => {
     if (e.which === 13) {
-      console.log("Enter ");
+      
       searchArticle();
     }
   };
   useEffect(() => {
+  
+    
     if(category){
       dispatch(getArticlesByCategory(category))
     }
@@ -49,6 +57,8 @@ const Home = () => {
     }
    
   }, [dispatch,category]);
+
+  
   return (
     <section>
       <div className="box">

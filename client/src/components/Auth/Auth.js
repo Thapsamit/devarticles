@@ -1,9 +1,10 @@
 import { useState } from "react";
-import { GoogleLogin } from "@react-oauth/google";
+import { GoogleLogin,googleLogout } from "@react-oauth/google";
 import { signup, signin } from "../../actions/auth";
 import { useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
-
+import { AUTH } from "../../constants/actionTypes";
+import jwt_decode from 'jwt-decode';
 const initialState = { name: "", email: "", password: "" };
 const Auth = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -27,8 +28,14 @@ const Auth = () => {
   const switchAuthComponent = () => {
     setIsSignUp(!isSignUp);
   };
-  const googleSuccess = (res) => {
-    console.log(res);
+  const googleSuccess = async (res) => {
+    const {name,picture,email,sub} = jwt_decode(res.credential);
+    const token = res.credential;
+    const result =  {name,picture,email,sub};
+    await dispatch({type:AUTH , data:{result,token}})
+    
+    history.push('/');
+    
   };
   const googleFailure = (err) => {
     console.log(err);

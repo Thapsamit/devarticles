@@ -8,19 +8,21 @@ import { HiUserCircle } from "react-icons/hi";
 import { likeArticle, deleteArticle } from "../../actions/articles";
 
 import CommentSection from "./CommentSection";
+import Loader from "../Loader/Loader";
 const PostDetails = () => {
   const { article, articles, isLoading } = useSelector(
     (state) => state.articles
   );
-
+  
   const history = useHistory();
   const user = JSON.parse(localStorage.getItem("profile"));
-  const userId = user?.result?._id;
+  const userId = user?.result?._id || user?.result?.sub;
 
   const { id } = useParams();
   const dispatch = useDispatch();
 
   const Likes = () => {
+    console.log(article?.likes)
     if (article?.likes?.length >= 0) {
       return article.likes.find((like) => like === userId) ? (
         <div className="flex items-center  text-mainColor cursor-pointer">
@@ -43,7 +45,7 @@ const PostDetails = () => {
   if (isLoading)
     return (
       <>
-        <h1>Loading...</h1>
+        <Loader/>
       </>
     );
   return (
@@ -90,7 +92,7 @@ const PostDetails = () => {
                   <Likes />
                 </button>
 
-                {user?.result?._id === article?.author && (
+                {((user?.result?._id === article?.author) || (user?.result?.sub === article?.author)) && (
                   <div
                     className="flex items-center hover:text-red-500 cursor-pointer"
                     onClick={() => {

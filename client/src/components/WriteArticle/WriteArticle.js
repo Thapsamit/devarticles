@@ -29,19 +29,16 @@ const WriteArticle = () => {
   const dispatch = useDispatch();
   const history = useHistory();
   const user = JSON.parse(localStorage.getItem("profile"));
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (id) {
-      console.log("update triggered");
-      dispatch(updateArticle(id, { ...articleData, name: user?.result?.name }));
+     
+      await dispatch(updateArticle(id, { ...articleData, name: user?.result?.name }));
     } else {
-      dispatch(createArticle({ ...articleData, name: user?.result?.name }));
+      await dispatch(createArticle({ ...articleData, name: user?.result?.name }));
     }
     clear(e);
-    console.log(articleData);
-    setTimeout(() => {
-      history.push("/articles");
-    }, 1000);
+    history.push('/articles')
   };
   const clear = (e) => {
     e.preventDefault();
@@ -55,7 +52,7 @@ const WriteArticle = () => {
     <>
       <div className="box">
         <h1 className="mt-[20px] text-mainColor text-[2rem] text-center">
-          Write an Article
+          {id ? 'Edit Your Article':'Write Your Article'}
         </h1>
         <div className="p-[10px] mb-[2rem]">
           <div className="w-full md:w-[70%]">

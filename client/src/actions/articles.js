@@ -10,7 +10,8 @@ import {
   FETCH_ARTICLE,
   COMMENT,
   LIKE,
-  FETCH_BY_CATEGORY
+  FETCH_BY_CATEGORY,
+  ADD_BOOKMARK
 } from "../constants/actionTypes";
 //Action creators
 //asynchronus approach
@@ -76,9 +77,11 @@ export const likeArticle = (id) => async (dispatch) => {
 export const commentArticle = (com, id) => async (dispatch) => {
   try {
     const { data } = await api.comment(com, id);
-   
+    dispatch({type:START_LOADING})
     dispatch({ type: COMMENT, payload: data });
+    dispatch({type:END_LOADING})
     return data.comments;
+    
   } catch (error) {
     console.log(error);
   }
@@ -108,4 +111,14 @@ export const getArticlesByCategory = (category)=> async(dispatch)=>{
   catch(err){
    console.log(err)
   }
+}
+export const addingBookmark = (id)=> async (dispatch) => {
+     try {
+       
+       await api.addBookmark(id);
+       dispatch({type:ADD_BOOKMARK,payload:id})
+   
+     } catch (error) {
+      console.log(error)
+     }
 }

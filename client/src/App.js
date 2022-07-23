@@ -24,6 +24,7 @@ const App = ()=>{
          <Route path='/auth' component={()=>(!user ? <Auth/>: <Redirect to ="/articles"/>)}/>
          <Route path="/writeArticle" component={WriteArticle}/>
          <Route path="/editArticle/:id" component={WriteArticle}/>
+         <Route path="/bookmarks" component={Home}/>
       </Switch>
      
      </BrowserRouter>   
