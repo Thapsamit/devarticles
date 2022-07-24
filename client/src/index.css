@@ -4,7 +4,7 @@
 @tailwind utilities;
 @layer base {
   .box {
-    @apply max-w-6xl mx-auto;
+    @apply px-[1rem] md:max-w-6xl md:mx-auto;
   }
   body {
     @apply font-body bg-darkBg;

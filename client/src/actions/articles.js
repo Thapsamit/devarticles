@@ -19,7 +19,8 @@ export const getArticle = (id) => async (dispatch) => {
   try {
     dispatch({ type: START_LOADING });
     const { data } = await api.fetchArticle(id);
-
+  
+   
     dispatch({ type: FETCH_ARTICLE, payload: { article: data } });
     dispatch({ type: END_LOADING });
   } catch (err) {
@@ -32,7 +33,7 @@ export const getArticles = () => async (dispatch) => {
     const {
       data: { data },
     } = await api.fetchArticles();
-    console.log(data);
+
     dispatch({ type: FETCH_ALL, payload: { data } });
     dispatch({ type: END_LOADING });
   } catch (err) {

@@ -1,10 +1,10 @@
 import { useState } from "react";
-import { GoogleLogin,googleLogout } from "@react-oauth/google";
+import { GoogleLogin, googleLogout } from "@react-oauth/google";
 import { signup, signin } from "../../actions/auth";
 import { useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
 import { AUTH } from "../../constants/actionTypes";
-import jwt_decode from 'jwt-decode';
+import jwt_decode from "jwt-decode";
 const initialState = { name: "", email: "", password: "" };
 const Auth = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -29,11 +29,11 @@ const Auth = () => {
     setIsSignUp(!isSignUp);
   };
   const googleSuccess = async (res) => {
-    const {name,picture,email,sub} = jwt_decode(res.credential);
+    const { name, picture, email, sub } = jwt_decode(res.credential);
     const token = res.credential;
-    const result =  {name,picture,email,sub};
-    await dispatch({type:AUTH , data:{result,token}})
-    history.push('/');
+    const result = { name, picture, email, sub };
+    await dispatch({ type: AUTH, data: { result, token } });
+    history.push("/");
   };
   const googleFailure = (err) => {
     console.log(err);
@@ -42,7 +42,7 @@ const Auth = () => {
   return (
     <div className="box">
       <div className="w-full flex justify-center">
-        <div className="bg-darkBg mt-[2.5rem] mb-[2rem] border-mainColor border rounded-md shadow-md py-[20px] w-3/4 md:w-2/5">
+        <div className="bg-darkBg mt-[2.5rem] mb-[2rem] border-mainColor border rounded-md shadow-md py-[20px] w-full md:w-2/5">
           <div>
             <div className="border-b border-primaryText1 text-center">
               <h1 className="uppercase text-mainColor text-[1.3rem] pb-2">
@@ -87,7 +87,7 @@ const Auth = () => {
                 <button type="submit" className="btn block w-full">
                   {isSignUp ? "Sign Up" : "Login"}
                 </button>
-                {/*!isSignUp &&(   <button className="btn block w-full">Sign In With Google </button>)*/}
+
                 <GoogleLogin
                   onSuccess={googleSuccess}
                   onError={googleFailure}

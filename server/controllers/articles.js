@@ -53,7 +53,7 @@ export const getArticlesByCategory = async (req,res)=>{
 
 export const createArticle = async (req, res) => {
   const article = req.body;
-
+ 
   const newArticle = new postArticle({
     ...article,
     author: req.userId,

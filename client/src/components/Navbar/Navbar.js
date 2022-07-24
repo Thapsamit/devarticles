@@ -15,8 +15,9 @@ const Navbar = () => {
   const history = useHistory();
   const logout = async () => {
     await dispatch({ type: actionTypes.LOGOUT });
-    history.push("/auth");
     setUser(null);
+    history.push("/auth");
+   
   };
   useEffect(() => {
     const token = user?.token;
@@ -30,15 +31,16 @@ const Navbar = () => {
     setUser(JSON.parse(localStorage.getItem("profile")));
   }, [location]);
   return (
-    <header className="shadow-lg bg-lightBg text-white">
+    <header className="shadow-lg bg-lightBg text-white w-full">
       <div className="box">
         <div className="w-full p-5 flex justify-between items-center">
-          <button onClick={()=>{history.push('/')}}><h1 className="text-mainColor text-[1.25rem]">DevArticles</h1></button>
+         <button onClick={()=>{history.push('/')}}><h1 className="text-mainColor text-[1.25rem]">DevArticles</h1></button>
           
           
-          <ul className="flex items-center">
+          <ul className="hidden sm:flex sm:items-center">
             {user ? (
               <div className="flex items-center">
+                
                 
                 <Link to="/writeArticle">
                   <li className="text-gray-300 navItems hover:text-mainColor">

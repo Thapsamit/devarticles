@@ -63,7 +63,7 @@ const Home = () => {
     <section>
       <div className="box">
         <div className="my-4">
-          <div className="flex items-center">
+          <div className="flex items-center  md:mx-[0]">
             <label for="simple-search" className="sr-only">
               Search
             </label>
@@ -116,7 +116,7 @@ const Home = () => {
           </div>
         </div>
         <div className="block grid-cols-3 w-full md:grid md:gap-2 mt-3">
-          <div className="col-start-1 col-end-2">
+          <div className="col-start-1 col-end-2 mb-[20px]">
             <div>
               <h3 className="customHeadings">By Categories</h3>
               <div className="bg-lightBg text-primaryText2 text-[14px] mt-[10px] p-[15px] rounded">

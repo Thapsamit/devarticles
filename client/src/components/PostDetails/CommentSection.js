@@ -20,16 +20,16 @@ const CommentSection = ({ article }) => {
     <>
       <div>
         {user?.result?.name && (
-          <div className="flex my-[20px]">
+          <div className="block md:flex my-[20px]">
             <input
               type="text"
-              className="bg-lightBg text-[16px] text-white text-sm outline-0 w-full transition ease-in-out border-mainColor border p-[16px] rounded-sm placeholder:text-primaryText1 placeholder:text-[12px];"
+              className="bg-lightBg text-[16px] mb-[20px] text-white text-sm outline-0 w-full transition ease-in-out border-mainColor border p-[16px] rounded-sm placeholder:text-primaryText1 placeholder:text-[12px]"
               placeholder="Enter Your Comment..."
               value={comment}
               onChange={(e) => setComment(e.target.value)}
             />
             <button
-              className="h-full bg-mainColor p-[16px] text-white px-[50px]"
+              className="h-full bg-mainColor p-[10px] md:p-[16px] px-[20px] text-white md:px-[50px]"
               onClick={handleClick}
             >
               Add

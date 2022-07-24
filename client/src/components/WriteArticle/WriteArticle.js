@@ -6,10 +6,12 @@ import { useHistory } from "react-router-dom";
 import { useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
 import categories from '../../categories.json'
+import TextEditor from "../TextEditor/TextEditor";
 const WriteArticle = () => {
   const [articleData, setArticleData] = useState({
     title: "",
     articleBody: "",
+    articleBodyRaw:"",
     tags: "",
     selectedFile: "",
     category:""
@@ -55,7 +57,7 @@ const WriteArticle = () => {
           {id ? 'Edit Your Article':'Write Your Article'}
         </h1>
         <div className="p-[10px] mb-[2rem]">
-          <div className="w-full md:w-[70%]">
+          <div className="md:w-[70%]">
             <form onSubmit={handleSubmit}>
               <div className="my-[15px]">
                 <input
@@ -69,7 +71,8 @@ const WriteArticle = () => {
                 />
               </div>
               <div className="my-[15px]">
-                <textarea
+                <TextEditor articleData = {articleData} setArticleData = {setArticleData} id={id}/>
+                {/* <textarea
                   className="custom-input h-[300px] placeholder:text-center focus:border-mainColor"
                   placeholder="Enter Article Body..."
                   value={articleData.articleBody}
@@ -79,7 +82,9 @@ const WriteArticle = () => {
                       articleBody: e.target.value,
                     })
                   }
-                />
+                /> */}
+                 
+              
               </div>
               <div className="my-[15px]">
                 <input

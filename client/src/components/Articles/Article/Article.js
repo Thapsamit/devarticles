@@ -6,7 +6,7 @@ import {
   HiThumbUp,
 } from "react-icons/hi";
 
-import { BsFillBookmarkCheckFill, BsBookmarkPlus } from "react-icons/bs";
+import {  BsBookmarkPlus } from "react-icons/bs";
 import { MdOutlineInsertComment } from "react-icons/md";
 import { BsPencilSquare } from "react-icons/bs";
 import { useHistory } from "react-router-dom";
@@ -69,17 +69,17 @@ const Article = ({ article }) => {
     <>
       <div className="bg-lightBg shadow-md rounded-lg overflow-hidden my-[10px] w-full">
         <div className="flex p-[10px]">
-          <div className="w-[30%] mr-[20px]">
+          <div className="hidden md:w-[30%] md:block md:mr-[20px]">
             <img
               src={article.selectedFile}
               className="w-full h-full rounded"
               alt="Article"
             />
           </div>
-          <div className="text-xl w-[70%]">
+          <div className="w-full px-[10px] text-xl md:w-[70%] md:px-0">
             <div className="flex justify-between">
               <button onClick={getArticle}>
-                <h3 className="text-mainColor underline"> {article.title}</h3>
+                <h3 className="text-mainColor underline text-left"> {article.title}</h3>
               </button>
 
               {(user?.result?._id === article?.author ||
@@ -96,11 +96,11 @@ const Article = ({ article }) => {
             </div>
 
             <p className="text-white text-[12px] py-[5px]">
-              {formattedArticleBody(article.articleBody)}
+              Click To View Content.....
             </p>
-            <div className="my-1 mx-0">
+            <div className="my-1 mx-0  md:flex">
               {article.tags.map((tag, idx) => (
-                <span key={idx} className="tags">
+                <span key={idx} className="tags inline-block my-[5px] sm:inline md:inline">
                   #{tag}
                 </span>
               ))}
@@ -115,7 +115,7 @@ const Article = ({ article }) => {
               </div>
             </div>
 
-            <div className="flex items-center text-[15px] mt-[10px] py-[10px] px-0 border-t-[1px] border-gray-500 border-solid  ">
+            <div className="md:flex md:items-center text-[15px] mt-[10px] py-[10px] px-0 border-t-[1px] border-gray-500 border-solid  ">
               <button
                 disabled={!user?.result}
                 onClick={handleLikeClick}
@@ -123,10 +123,11 @@ const Article = ({ article }) => {
               >
                 <Likes />
               </button>
-              <MdOutlineInsertComment className="w-[20px] h-[20px] mr-[5px] text-yellow-500" />
+              <div className="flex items-center"> <MdOutlineInsertComment className="w-[20px] h-[20px] mr-[5px] text-yellow-500" />
               <p className="text-yellow-500 mr-[20px]">
                 Comments {article?.comments.length}{" "}
-              </p>
+              </p></div>
+             
               {user?.result?._id && (
                 <button
                   disabled={!user?.result}

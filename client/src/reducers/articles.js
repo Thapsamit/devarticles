@@ -17,6 +17,7 @@ const articles = (state = { isLoading: true, articles: [] }, action) => {
     console.log(action.payload.data);
     return { ...state, articles: action.payload.data };
   } else if (action.type === FETCH_ARTICLE) {
+   
     return { ...state, article: action.payload.article };
   } else if (action.type === CREATE) {
     return { ...state, articles: [...state.articles, action.payload] };

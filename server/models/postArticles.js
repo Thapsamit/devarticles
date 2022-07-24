@@ -3,6 +3,7 @@ const PostArticlesSchema = new mongoose.Schema({
   title: String,
   name: String,
   articleBody: String,
+  articleBodyRaw:String,
   author: String,
   tags: [String],
   category:String,

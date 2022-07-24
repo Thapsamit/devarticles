@@ -3,11 +3,13 @@ import { useDispatch, useSelector } from "react-redux";
 import { HiOutlineThumbUp, HiOutlineTrash, HiThumbUp } from "react-icons/hi";
 import moment from "moment";
 import { useHistory, useParams } from "react-router-dom";
-import { getArticle } from "../../actions/articles";
+import { getArticle,getArticles } from "../../actions/articles";
 import { HiUserCircle } from "react-icons/hi";
 import { likeArticle, deleteArticle } from "../../actions/articles";
 
+import {Markup} from 'interweave'; 
 import CommentSection from "./CommentSection";
+
 import Loader from "../Loader/Loader";
 const PostDetails = () => {
   const { article, articles, isLoading } = useSelector(
@@ -18,11 +20,15 @@ const PostDetails = () => {
   const user = JSON.parse(localStorage.getItem("profile"));
   const userId = user?.result?._id || user?.result?.sub;
 
+  
   const { id } = useParams();
   const dispatch = useDispatch();
-
+  
+  const recommendedPosts = articles.filter(({_id})=>_id!==article._id)
+   
+  
   const Likes = () => {
-    console.log(article?.likes)
+   
     if (article?.likes?.length >= 0) {
       return article.likes.find((like) => like === userId) ? (
         <div className="flex items-center  text-mainColor cursor-pointer">
@@ -37,8 +43,13 @@ const PostDetails = () => {
       );
     }
   };
-
+  
+  const openArticle = (_id)=>{
+    history.push(`/articles/${_id}`);
+  }
   useEffect(() => {
+    console.log("useefect run")
+    dispatch(getArticles());
     dispatch(getArticle(id));
   }, [dispatch, id]);
 
@@ -52,8 +63,8 @@ const PostDetails = () => {
     <>
       {article && (
         <div className="box mb-[20px]">
-          <div className="flex justify-between mt-[20px]">
-            <div className="bg-lightBg w-full mr-[20px] rounded py-[10px] px-[30px]">
+          <div className="block md:flex  justify-between mt-[20px]">
+            <div className="bg-lightBg w-full mr-[20px] mb-[20px] rounded py-[10px] px-[30px]">
               <div className="flex items-center my-4 mx-0 text-white">
                 <HiUserCircle className="w-[40px] h-[40px] mr-[16px]" />
                 <div className="text-[12px] font-medium">
@@ -79,8 +90,8 @@ const PostDetails = () => {
                 ))}
               </div>
 
-              <div className="py-[10px] mb-[20px]">
-                <p className="text-primaryText2">{article.articleBody}</p>
+              <div className="py-[10px] mb-[20px] text-primaryText2">
+                  <Markup content = {article.articleBody}/>
               </div>
 
               <div className="flex  items-center text-[15px] mt-[10px] py-[10px] px-0 border-t-[1px] border-gray-500 border-solid  ">
@@ -110,7 +121,7 @@ const PostDetails = () => {
               </div>
 
               <div className="py-[20px]">
-                <h4 className="text-mainColor text-[1.5rem]">
+                <h4 className="text-mainColor md:text-[1.5rem]">
                   Comment Section {`(${article?.comments.length})`}
                 </h4>
                 <div>
@@ -119,10 +130,20 @@ const PostDetails = () => {
               </div>
             </div>
 
-            <div className="">
-              <h2 className="customHeadings text-[14px]">
+            <div className="w-full md:w-2/5">
+              <h2 className="customHeadings text-[16px]">
                 Recommended Posts For You..
               </h2>
+              {recommendedPosts && (
+                <div className="bg-lightBg p-[20px] rounded shadow-md text-primaryText1">
+                  {recommendedPosts.map(({_id,title,likes})=>(
+                    <div key={_id} className="my-[10px] hover:text-mainColor hover:cursor-pointer" onClick={()=>openArticle(_id)}>
+                      <h3 className="underline">{title}</h3>
+                      
+                    </div>
+                  ))}
+                </div>
+              )}
             </div>
           </div>
         </div>
