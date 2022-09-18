@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect,useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { HiOutlineThumbUp, HiOutlineTrash, HiThumbUp } from "react-icons/hi";
 import moment from "moment";
@@ -6,7 +6,7 @@ import { useHistory, useParams } from "react-router-dom";
 import { getArticle,getArticles } from "../../actions/articles";
 import { HiUserCircle } from "react-icons/hi";
 import { likeArticle, deleteArticle } from "../../actions/articles";
-
+import { ReactDOM } from "react";
 import {Markup} from 'interweave'; 
 import CommentSection from "./CommentSection";
 
@@ -15,7 +15,8 @@ const PostDetails = () => {
   const { article, articles, isLoading } = useSelector(
     (state) => state.articles
   );
-  
+  const [iFrameHeight,setIFrameHeight] = useState('0px');
+  console.log(iFrameHeight)
   const history = useHistory();
   const user = JSON.parse(localStorage.getItem("profile"));
   const userId = user?.result?._id || user?.result?.sub;
@@ -24,7 +25,7 @@ const PostDetails = () => {
   const { id } = useParams();
   const dispatch = useDispatch();
   
-  const recommendedPosts = articles.filter(({_id})=>_id!==article._id)
+  const recommendedPosts = articles.filter(({_id})=>_id!==id)
    
   
   const Likes = () => {
@@ -90,8 +91,12 @@ const PostDetails = () => {
                 ))}
               </div>
 
-              <div className="py-[10px] mb-[20px] text-primaryText2">
-                  <Markup content = {article.articleBody}/>
+              <div className="all-revert">
+               <iframe srcDoc={article.articleBody} width="100%" height={iFrameHeight} frameborder="0" scrolling="no" onLoad={()=>{
+                const obj = ReactDOM.findDOMNode();
+                setIFrameHeight(obj.contentWindow.document.body.scrollHeight + 'px')
+               }} />
+
               </div>
 
               <div className="flex  items-center text-[15px] mt-[10px] py-[10px] px-0 border-t-[1px] border-gray-500 border-solid  ">

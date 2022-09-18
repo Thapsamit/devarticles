@@ -96,10 +96,7 @@ const Form = ({ currentId, setCurrentId }) => {
           </div>
           <div>
             <FileBase64 multiple={false} onDone={getFiles} />
-            {/* <ReactImageFileToBase64
-              multiple={false}
-              onCompleted={handleOnCompleted}
-            />*/}
+            
           </div>
           <button type="submit" className="btn w-full">
             Submit

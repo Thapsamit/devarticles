@@ -1,4 +1,19 @@
 import React, { useEffect, useState } from "react";
+import ReactQuill from 'react-quill';
+import 'react-quill/dist/quill.snow.css';
+import EditorToolbar,{ modules, formats } from './EditorToolbar';
+
+const TextEditor = ({articleData, setArticleData, id})=>{
+  
+       return(
+        <div className="bg-white">
+          <EditorToolbar toolbarId={'t1'}/>
+          <ReactQuill value={articleData.articleBody} onChange={(value)=>setArticleData({...articleData,articleBody:value})} theme="snow" placeholder="Write Something Here..." modules={modules('t1')}
+         formats={formats}/>
+        </div>
+       )
+}
+/*
 import { Editor } from "react-draft-wysiwyg";
 import {
   EditorState,
@@ -10,9 +25,18 @@ import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 import draftToHtml from "draftjs-to-html";
 import htmlToDraft from "html-to-draftjs";
 const TextEditor = ({ articleData, setArticleData, id }) => {
-  const [editorState, setEditorState] = useState(EditorState.createEmpty());
+  console.log(id)
+  const [editorState, setEditorState] = useState(()=>{
+    if(id!==undefined){
+      EditorState.createWithContent()
+    }
+    else{
+      EditorState.createEmpty();
+    }
+  });
+ 
 
-  console.log(articleData);
+  
   const handleEditorStateChange = (editorState) => {
     setEditorState(editorState);
   };
@@ -31,7 +55,7 @@ const TextEditor = ({ articleData, setArticleData, id }) => {
             articleBody: draftToHtml(
               convertToRaw(editorState.getCurrentContent())
             ),
-            articleBodyRaw: JSON.stringify(editorState.getCurrentContent()),
+            articleBodyRaw: JSON.stringify(convertToRaw(editorState.getCurrentContent())),
           })
         }
       />
@@ -39,40 +63,5 @@ const TextEditor = ({ articleData, setArticleData, id }) => {
   );
 };
 
-/*
-export default class TextEditor extends React.Component {
-  state = {
-    editorState: EditorState.createEmpty(),
-  };
-  onEditorStateChange = (editorState) => {
-    this.setState({
-      editorState,
-    });
-    
-  };
-  componentDidMount(){
-     if(id){
-        
-     }
-  }
-  render() {
-    const { editorState } = this.state;
-    const {articleData,setArticleData,id} = this.props;
-  
-    return (
-      <div>
-        <Editor
-          editorState={editorState}
-          toolbarClassName="toolbarClassName"
-          wrapperClassName="wrapperClassName bg-lightBg min-h-[500px]"
-          editorClassName="editorClassName text-white  p-[10px]"
-          onEditorStateChange={this.onEditorStateChange}
-          onChange = {()=>setArticleData({...articleData,articleBody:JSON.stringify(convertToRaw(editorState.getCurrentContent()))})}
-        />
-    
-      </div>
-    );
-  }
-}
 */
 export default TextEditor;

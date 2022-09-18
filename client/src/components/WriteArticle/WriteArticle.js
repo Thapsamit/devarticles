@@ -72,19 +72,6 @@ const WriteArticle = () => {
               </div>
               <div className="my-[15px]">
                 <TextEditor articleData = {articleData} setArticleData = {setArticleData} id={id}/>
-                {/* <textarea
-                  className="custom-input h-[300px] placeholder:text-center focus:border-mainColor"
-                  placeholder="Enter Article Body..."
-                  value={articleData.articleBody}
-                  onChange={(e) =>
-                    setArticleData({
-                      ...articleData,
-                      articleBody: e.target.value,
-                    })
-                  }
-                /> */}
-                 
-              
               </div>
               <div className="my-[15px]">
                 <input
@@ -115,7 +102,8 @@ const WriteArticle = () => {
               </div>
 
               <div className="bg-lightBg my-[15px]  border-2 border-mainColor border-dashed p-[20px]">
-                <FileBase64 multiple={false} onDone={getFiles} />
+                 <p className="text-primaryText1 text-[18px] mb-[10px]">Put a Thumbnail Image..</p>
+                <FileBase64 multiple={false} onDone={getFiles}/>
               </div>
               <div className="my-[15px]">
                 <button

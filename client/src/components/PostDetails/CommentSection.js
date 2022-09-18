@@ -40,7 +40,7 @@ const CommentSection = ({ article }) => {
         {Comments.map((com, ind) => (
           <div key={ind}>
               <div className="w-full bg-darkBg py-[10px] px-[20px] border-b-[1px] border-primaryText1 my-[10px]">
-                  <h1 className="text-mainColor text-[1.2rem]">
+                  <h1 className="text-mainColor text-[1rem]">
                      {com.split(':')[0]}
                   </h1>
                    <p className="text-primaryText1 text-[12px]">{com.split(':')[1]}</p>
