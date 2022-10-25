@@ -1,4 +1,4 @@
-import { useEffect,useState } from "react";
+import { useEffect,useState} from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { HiOutlineThumbUp, HiOutlineTrash, HiThumbUp } from "react-icons/hi";
 import moment from "moment";
@@ -6,8 +6,7 @@ import { useHistory, useParams } from "react-router-dom";
 import { getArticle,getArticles } from "../../actions/articles";
 import { HiUserCircle } from "react-icons/hi";
 import { likeArticle, deleteArticle } from "../../actions/articles";
-import { ReactDOM } from "react";
-import {Markup} from 'interweave'; 
+
 import CommentSection from "./CommentSection";
 
 import Loader from "../Loader/Loader";
@@ -15,31 +14,36 @@ const PostDetails = () => {
   const { article, articles, isLoading } = useSelector(
     (state) => state.articles
   );
-  const [iFrameHeight,setIFrameHeight] = useState('0px');
-  console.log(iFrameHeight)
+
+
   const history = useHistory();
   const user = JSON.parse(localStorage.getItem("profile"));
   const userId = user?.result?._id || user?.result?.sub;
-
+  
   
   const { id } = useParams();
   const dispatch = useDispatch();
-  
+  const[commentsCounts,setCommentsCounts] = useState(article ? article?.comments.length : 0)
+
+  const[likes,setLikes] = useState(article ? article?.likes : [])
+ 
+  const hasLiked = likes?.find((like) => like === userId);
   const recommendedPosts = articles.filter(({_id})=>_id!==id)
-   
+ 
   
   const Likes = () => {
    
-    if (article?.likes?.length >= 0) {
-      return article.likes.find((like) => like === userId) ? (
+    if (likes?.length >= 0) {
+      
+      return likes.find((like) => like === userId) ? (
         <div className="flex items-center  text-mainColor cursor-pointer">
           <HiThumbUp className="w-[20px] h-[20px] mr-[5px]" />
-          <p className="text-mainColor">Like {article.likes.length}</p>
+          <p className="text-mainColor">Like {likes.length}</p>
         </div>
       ) : (
         <div className="flex items-center text-primaryText2 hover:text-mainColor cursor-pointer">
           <HiOutlineThumbUp className="w-[20px] h-[20px] mr-[5px]" />
-          <p>Like {article.likes.length}</p>
+          <p>Like {likes.length}</p>
         </div>
       );
     }
@@ -48,11 +52,28 @@ const PostDetails = () => {
   const openArticle = (_id)=>{
     history.push(`/articles/${_id}`);
   }
+  const handleLike =  async ()=>{
+   await dispatch(likeArticle(article._id));
+   
+    if (hasLiked) {
+      setLikes(likes.filter((id) => id !== userId));
+    } else {
+      setLikes([...likes, userId]);
+    }
+    
+  }
   useEffect(() => {
-    console.log("useefect run")
+  
+   
     dispatch(getArticles());
     dispatch(getArticle(id));
+
+
   }, [dispatch, id]);
+  useEffect(()=>{
+     setLikes(article?.likes)
+  
+  },[article])
 
   if (isLoading)
     return (
@@ -92,17 +113,14 @@ const PostDetails = () => {
               </div>
 
               <div className="all-revert">
-               <iframe srcDoc={article.articleBody} width="100%" height={iFrameHeight} frameborder="0" scrolling="no" onLoad={()=>{
-                const obj = ReactDOM.findDOMNode();
-                setIFrameHeight(obj.contentWindow.document.body.scrollHeight + 'px')
-               }} />
+                  <div className="ql-editor" dangerouslySetInnerHTML={{__html:article.articleBody}}></div>
 
               </div>
 
               <div className="flex  items-center text-[15px] mt-[10px] py-[10px] px-0 border-t-[1px] border-gray-500 border-solid  ">
                 <button
                   disabled={!user?.result}
-                  onClick={() => dispatch(likeArticle(article._id))}
+                  onClick={handleLike}
                   className="mr-[20px]"
                 >
                   <Likes />
@@ -127,10 +145,10 @@ const PostDetails = () => {
 
               <div className="py-[20px]">
                 <h4 className="text-mainColor md:text-[1.5rem]">
-                  Comment Section {`(${article?.comments.length})`}
+                  Comment Section {`(${commentsCounts})`}
                 </h4>
                 <div>
-                  <CommentSection article={article} />
+                  <CommentSection article={article} commentsCount={commentsCounts} setCommentsCount={setCommentsCounts}/>
                 </div>
               </div>
             </div>

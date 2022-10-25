@@ -25,7 +25,7 @@ const Article = ({ article }) => {
   const user = JSON.parse(localStorage.getItem("profile"));
   const userId = user?.result?._id || user?.result?.sub;
   const hasLiked = likes.find((like) => like === userId);
-
+  /*
   const formattedArticleBody = (str) => {
     if (str.length > 100) {
       let reducedStr = str.substring(0, 101);
@@ -35,6 +35,7 @@ const Article = ({ article }) => {
       return str;
     }
   };
+  */
   const getArticle = () => {
     history.push(`/articles/${article._id}`);
   };

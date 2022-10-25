@@ -70,7 +70,7 @@ export const createArticle = async (req, res) => {
 export const updateArticle = async (req, res) => {
   const { id: _id } = req.params;
   const article = req.body;
- 
+
   if (!mongoose.Types.ObjectId.isValid(_id)) {
     return res.status(404).send("No Post with this id");
   } else {

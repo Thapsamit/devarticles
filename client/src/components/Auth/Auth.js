@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { GoogleLogin, googleLogout } from "@react-oauth/google";
+import { GoogleLogin} from "@react-oauth/google";
 import { signup, signin } from "../../actions/auth";
 import { useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";

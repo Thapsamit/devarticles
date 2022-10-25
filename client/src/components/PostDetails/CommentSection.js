@@ -1,9 +1,11 @@
 import React, { useState } from "react";
+import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { commentArticle } from "../../actions/articles";
-const CommentSection = ({ article }) => {
+const CommentSection = ({ article,commentsCount,setCommentsCount }) => {
   const [Comments, setComments] = useState(article?.comments);
   const [comment, setComment] = useState("");
+
   const dispatch = useDispatch();
   const user = JSON.parse(localStorage.getItem("profile"));
 
@@ -12,10 +14,18 @@ const CommentSection = ({ article }) => {
     const newComments = await dispatch(
       commentArticle(formattedComment, article._id)
     );
+    
     setComments(newComments);
     setComment("");
+    setCommentsCount(commentsCount+1)
   };
-
+  
+  useEffect(()=>{
+    if(article){
+      setCommentsCount(article?.comments.length)
+    }
+  },[article,setCommentsCount])
+  
   return (
     <>
       <div>

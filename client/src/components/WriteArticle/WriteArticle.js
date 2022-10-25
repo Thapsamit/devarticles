@@ -5,29 +5,29 @@ import { useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
 import { useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
-import categories from '../../categories.json'
+
 import TextEditor from "../TextEditor/TextEditor";
 const WriteArticle = () => {
-  const [articleData, setArticleData] = useState({
+  const { id } = useParams();
+  
+  const article = useSelector((state) =>
+    
+    id ? state.articles.articles.find((p) => p._id === id) : null
+    
+  );
+
+  const [articleData, setArticleData] = useState(article ? {...article}:{
     title: "",
     articleBody: "",
-    articleBodyRaw:"",
     tags: "",
     selectedFile: "",
     category:""
   });
-  const { id } = useParams();
+  
 
-  const article = useSelector((state) =>
-    id ? state.articles.articles.find((p) => p._id === id) : null
-  );
-
-  useEffect(() => {
-    if (article) {
-      setArticleData(article);
-    }
-  }, [article]);
-
+  
+  
+  
   const dispatch = useDispatch();
   const history = useHistory();
   const user = JSON.parse(localStorage.getItem("profile"));
@@ -44,12 +44,21 @@ const WriteArticle = () => {
   };
   const clear = (e) => {
     e.preventDefault();
-    setArticleData({ title: "", articleBody: "", tags: "", selectedFile: "" });
+    setArticleData({ title: "", articleBody: "", tags: "",category:"", selectedFile: "" });
   };
 
   const getFiles = (files) => {
     setArticleData({ ...articleData, selectedFile: files.base64 });
   };
+
+
+  useEffect(() => {
+    console.log("useffect")
+    console.log(article)
+    if (article) {
+      setArticleData(article);
+    }
+  }, [article]);
   return (
     <>
       <div className="box">
@@ -87,9 +96,10 @@ const WriteArticle = () => {
                   }
                 />
               </div>
+              {/*
               <div>
                 <select
-                  
+                  value={articleData.category}
                   className="outline-none bg-lightBg p-[16px] text-primaryText1 text-[12px] rounded block w-full border border-mainColor focus:border-2"
                   onChange={(e)=>setArticleData({...articleData,category:e.target.value})}
                 >
@@ -99,8 +109,8 @@ const WriteArticle = () => {
                   ))}
                   
                 </select>
-              </div>
-
+              </div> 
+               */}
               <div className="bg-lightBg my-[15px]  border-2 border-mainColor border-dashed p-[20px]">
                  <p className="text-primaryText1 text-[18px] mb-[10px]">Put a Thumbnail Image..</p>
                 <FileBase64 multiple={false} onDone={getFiles}/>
