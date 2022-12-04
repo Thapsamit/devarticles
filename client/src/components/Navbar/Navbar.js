@@ -33,43 +33,43 @@ const Navbar = () => {
   return (
     <header className="shadow-lg bg-lightBg text-white w-full">
       <div className="box">
-        <div className="w-full p-5 flex justify-between items-center">
+        <div className="block w-full py-3 sm:flex sm:justify-between sm:items-center">
          <button onClick={()=>{history.push('/')}}><h1 className="text-mainColor text-[1.25rem]">DevArticles</h1></button>
           
           
-          <ul className="hidden sm:flex sm:items-center">
+          <ul className="flex items-center">
             {user ? (
-              <div className="flex items-center">
+              <div className="block  sm:py-[10px] sm:flex sm:items-center">
                 
                 
                 <Link to="/writeArticle">
-                  <li className="text-gray-300 navItems hover:text-mainColor">
+                  <li className="py-2 text-gray-300 navItems hover:text-mainColor">
                     Write Article
                   </li>
                 </Link>
                 <Link to="/bookmarks">
-                  <li className="text-gray-300 navItems hover:text-mainColor">
+                  <li className="py-2 text-gray-300 navItems hover:text-mainColor">
                     Bookmarks
                   </li>
                 </Link>
-                <li className="text-gray-300 navItems hover:text-mainColor">
+                <li className="py-2 text-gray-300 navItems hover:text-mainColor">
                   {user?.result.name}
                 </li>
-                <li className="navItems">
+                <li className="py-2 navItems">
                   <img
                     src={user?.result?.picture || img}
                     className="w-[30px] h-[30px] rounded"
                     alt="avatar here"
                   />
                 </li>
-                <li className="navItems">
+                <li className="py-2 navItems">
                   <button className="btn btn-danger" onClick={logout}>
                     Log Out
                   </button>
                 </li>
               </div>
             ) : (
-              <li className="navItems">
+              <li className="py-2 navItems">
                 <Link to="/auth">
                   <button className="btn-grad">Sign In</button>
                 </Link>

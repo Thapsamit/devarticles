@@ -5,16 +5,22 @@ import { useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
 import { AUTH } from "../../constants/actionTypes";
 import jwt_decode from "jwt-decode";
+
+
 const initialState = { name: "", email: "", password: "" };
 const Auth = () => {
+ 
+  const[isLoad,setLoad] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [isSignUp, setIsSignUp] = useState(false);
   const [formData, setFormData] = useState(initialState);
   const dispatch = useDispatch();
   const history = useHistory();
+ 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(formData);
+    setLoad(!isLoad);
+  
     if (isSignUp) {
       dispatch(signup(formData, history));
     } else {
@@ -38,8 +44,11 @@ const Auth = () => {
   const googleFailure = (err) => {
     console.log(err);
   };
+ 
 
   return (
+   <>
+   
     <div className="box">
       <div className="w-full flex justify-center">
         <div className="bg-darkBg mt-[2.5rem] mb-[2rem] border-mainColor border rounded-md shadow-md py-[20px] w-full md:w-2/5">
@@ -83,10 +92,12 @@ const Auth = () => {
                     onChange={handleChange}
                   />
                 </div>
-
-                <button type="submit" className="btn block w-full">
+                {isLoad ? (<button type="submit" className="btn block w-full">
+                  {isSignUp ? "Signing Up...." : "Loginng In...."}
+                </button>):(<button type="submit" className="btn block w-full">
                   {isSignUp ? "Sign Up" : "Login"}
-                </button>
+                </button>)}
+                
 
                 <GoogleLogin
                   onSuccess={googleSuccess}
@@ -107,6 +118,9 @@ const Auth = () => {
         </div>
       </div>
     </div>
+   
+    
+    </>
   );
 };
 export default Auth;

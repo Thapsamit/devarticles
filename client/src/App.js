@@ -10,7 +10,7 @@ import { BrowserRouter, Switch, Route,Redirect } from 'react-router-dom';
 const App = ()=>{
    
    const user = JSON.parse(localStorage.getItem('profile'));
-   console.log(user)
+  
     return(
         <>
      <BrowserRouter>

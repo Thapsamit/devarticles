@@ -2,7 +2,7 @@ import axios from 'axios'
 
 
 
-const API = axios.create({baseURL:'http://localhost:5000'})
+const API = axios.create({baseURL:'https://devarticles-backen.onrender.com'})
 // interceptors to help middeleware to work 
 API.interceptors.request.use((req)=>{
           if(localStorage.getItem('profile')){
