@@ -5,7 +5,7 @@ import { useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
 import { useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
-
+import categories from '../../categories.json'
 import TextEditor from "../TextEditor/TextEditor";
 const WriteArticle = () => {
   const { id } = useParams();
@@ -96,7 +96,7 @@ const WriteArticle = () => {
                   }
                 />
               </div>
-              {/*
+              
               <div>
                 <select
                   value={articleData.category}
@@ -110,7 +110,7 @@ const WriteArticle = () => {
                   
                 </select>
               </div> 
-               */}
+               
               <div className="bg-lightBg my-[15px]  border-2 border-mainColor border-dashed p-[20px]">
                  <p className="text-primaryText1 text-[18px] mb-[10px]">Put a Thumbnail Image..</p>
                 <FileBase64 multiple={false} onDone={getFiles}/>
