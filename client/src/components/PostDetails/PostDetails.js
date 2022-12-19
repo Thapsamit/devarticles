@@ -113,7 +113,7 @@ const PostDetails = () => {
               </div>
 
               <div className="all-revert">
-                  <div className="ql-editor" dangerouslySetInnerHTML={{__html:article.articleBody}}></div>
+                  <div className="ql-editor" style={{color:"#A0AEC0"}} dangerouslySetInnerHTML={{__html:article.articleBody}}></div>
 
               </div>
 

@@ -8,6 +8,7 @@ import { useSelector } from "react-redux";
 import categories from '../../categories.json'
 import TextEditor from "../TextEditor/TextEditor";
 const WriteArticle = () => {
+  const[isLoad,setIsLoad] = useState(false);
   const { id } = useParams();
   
   const article = useSelector((state) =>
@@ -33,6 +34,7 @@ const WriteArticle = () => {
   const user = JSON.parse(localStorage.getItem("profile"));
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setIsLoad(!isLoad);
     if (id) {
      
       await dispatch(updateArticle(id, { ...articleData, name: user?.result?.name }));
@@ -120,7 +122,7 @@ const WriteArticle = () => {
                   type="submit"
                   className="btn py-[12px] px-[50px] mr-[15px]"
                 >
-                  Submit
+                  {isLoad ? "Submitting Your Article...." : "Submit"}
                 </button>
                 <button
                   className="bg-clearBtn btn py-[12px] px-[50px]"
