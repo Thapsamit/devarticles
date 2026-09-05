@@ -1,68 +1,788 @@
-@import url("https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;1,100;1,200;1,300;1,500;1,600;1,700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Plus+Jakarta+Sans:wght@500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap");
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* ============================================================
+   THEME TOKENS
+   Dark is the default; [data-theme="light"] swaps the values.
+   ============================================================ */
+:root,
+:root[data-theme="dark"] {
+  color-scheme: dark;
+
+  --c-bg: 10 13 20;
+  --c-surface: 18 24 38;
+
+  --c-ink-950: 6 9 15;
+  --c-ink-900: 10 13 20;
+  --c-ink-850: 14 18 27;
+  --c-ink-800: 18 24 38;
+  --c-ink-750: 22 29 45;
+  --c-ink-700: 28 36 54;
+  --c-ink-600: 38 49 74;
+  --c-ink-500: 51 64 92;
+
+  --c-text-1: 122 138 163;
+  --c-text-2: 159 176 199;
+  --c-text-3: 203 214 230;
+  --c-text-4: 237 242 249;
+
+  --c-hair: 255 255 255;
+  --c-scrim: 6 9 15;
+
+  --c-accent-50: 238 245 255;
+  --c-accent-100: 217 232 255;
+  --c-accent-200: 185 213 255;
+  --c-accent-300: 138 186 255;
+  --c-accent-400: 92 155 251;
+  --c-accent-500: 79 141 249;
+  --c-accent-600: 59 111 224;
+  --c-accent-700: 47 85 180;
+  --c-accent-800: 40 68 140;
+  --c-accent-900: 31 52 104;
+
+  --c-violet: 139 92 246;
+  --c-mint: 52 211 153;
+  --c-amber: 245 181 68;
+  --c-cyan: 34 211 238;
+  --c-danger: 240 82 82;
+  --c-danger-text: 252 165 165;
+
+  /* ambient page glow */
+  --glow-a: 0.12;
+  --glow-b: 0.12;
+
+  /* syntax highlighting */
+  --hl-keyword: #c4a2ff;
+  --hl-string: #6ee7b7;
+  --hl-number: #f5b544;
+  --hl-attr: #7cc4ff;
+  --hl-builtin: #22d3ee;
+  --hl-deletion: #f98080;
+
+  --shadow-card: 0 1px 2px rgb(0 0 0 / 0.35), 0 8px 24px -12px rgb(0 0 0 / 0.55);
+  --shadow-card-hover: 0 2px 4px rgb(0 0 0 / 0.4), 0 24px 48px -24px rgb(0 0 0 / 0.75);
+
+  --sb-track: #0a0d14;
+  --sb-thumb: #26314a;
+  --sb-thumb-hover: #33405c;
+}
+
+:root[data-theme="light"] {
+  color-scheme: light;
+
+  /* soft cool off-white, never pure white paper and never pure black ink */
+  --c-bg: 244 246 249;
+  --c-surface: 255 255 255;
+
+  --c-ink-950: 240 243 247;
+  --c-ink-900: 249 250 252;
+  --c-ink-850: 248 250 252;
+  --c-ink-800: 255 255 255;
+  --c-ink-750: 246 248 251;
+  --c-ink-700: 241 245 249;
+  --c-ink-600: 226 232 240;
+  --c-ink-500: 203 213 225;
+
+  --c-text-1: 95 110 133;
+  --c-text-2: 71 85 105;
+  --c-text-3: 51 65 85;
+  --c-text-4: 17 26 44;
+
+  /* hairlines become slate instead of white, so the same alphas still read */
+  --c-hair: 15 23 42;
+  /* scrim stays dark: it sits on top of cover photography in both themes */
+  --c-scrim: 6 9 15;
+
+  --c-accent-50: 239 246 255;
+  --c-accent-100: 219 234 254;
+  --c-accent-200: 30 64 175;
+  --c-accent-300: 29 78 216;
+  --c-accent-400: 37 99 235;
+  --c-accent-500: 59 130 246;
+  --c-accent-600: 37 99 235;
+  --c-accent-700: 29 78 216;
+  --c-accent-800: 30 64 175;
+  --c-accent-900: 30 58 138;
+
+  --c-violet: 124 58 237;
+  --c-mint: 4 120 87;
+  --c-amber: 180 83 9;
+  --c-cyan: 8 145 178;
+  --c-danger: 220 38 38;
+  --c-danger-text: 185 28 28;
+
+  --glow-a: 0.07;
+  --glow-b: 0.06;
+
+  --hl-keyword: #7c3aed;
+  --hl-string: #047857;
+  --hl-number: #b45309;
+  --hl-attr: #1d4ed8;
+  --hl-builtin: #0e7490;
+  --hl-deletion: #be123c;
+
+  --shadow-card: 0 1px 2px rgb(15 23 42 / 0.05), 0 6px 18px -10px rgb(15 23 42 / 0.14);
+  --shadow-card-hover: 0 2px 6px rgb(15 23 42 / 0.07), 0 18px 36px -18px rgb(15 23 42 / 0.22);
+
+  --sb-track: #eef1f5;
+  --sb-thumb: #cbd5e1;
+  --sb-thumb-hover: #94a3b8;
+}
+
+/* ============================================================
+   BASE
+   ============================================================ */
 @layer base {
-  .box {
-    @apply px-[1rem] md:max-w-6xl md:mx-auto;
-  }
-  body {
-    @apply font-body bg-darkBg;
-  }
-  .btn {
-    @apply text-sm bg-mainColor text-white rounded-md py-4 px-4 my-3;
-  }
-  .danger {
-    @apply text-sm bg-danger text-white rounded-md py-2 px-4;
-  }
-  .formBox {
-    @apply my-2;
-  }
-  
-  textarea {
-    @apply text-sm resize-none border-2 w-full h-32 outline-0 rounded-md py-2 focus:border-primary transition ease-in-out;
-  }
-  .tags {
-    @apply text-white text-xs bg-gray-500 py-1 px-2.5 rounded-3xl mr-1;
-  }
-  .btn-grad {
-    @apply ml-[10px] py-[10px] px-[30px] text-[16px] text-center rounded-[10px] bg-mainColor;
-  }
-  .navItems {
-    @apply mx-[10px] text-[16px];
-  }
-  .custom-input {
-    @apply bg-lightBg text-[16px] text-white text-sm outline-0 w-full focus:border-2 transition ease-in-out border-mainColor border p-[16px] rounded-sm placeholder:text-primaryText1 placeholder:text-[12px];
-  }
-  .btn-gray{
-    @apply bg-white text-black;
-  }
-  .btn-danger{
-    @apply bg-red-600 m-0 py-[10px] px-[20px];
-  }
-  .customHeadings{
-    @apply text-primaryText3 text-xl;
-  }
-  .loaderContainer{
-    @apply flex h-[100px] justify-center items-center
-  }
-  .loaderBar{
-    @apply bg-primaryText2 w-[8px] h-[20px] m-[4px] rounded
-  }
-  .loaderBar1{
-    @apply animate-loaderBar1 
-  }
-  .loaderBar2{
-    @apply animate-loaderBar2
-  }
-  .loaderBar3{
-    @apply animate-loaderBar3 
-  }
-  .loaderBar4{
-    @apply animate-loaderBar4
-  }
-  .loaderBar5{
-    @apply animate-loaderBar5
+  * {
+    -webkit-tap-highlight-color: transparent;
   }
 
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply font-body bg-darkBg text-primaryText3 antialiased;
+    background-image:
+      radial-gradient(
+        900px 500px at 12% -8%,
+        rgb(var(--c-accent-500) / var(--glow-a)),
+        transparent 60%
+      ),
+      radial-gradient(
+        800px 460px at 92% 0%,
+        rgb(var(--c-violet) / var(--glow-b)),
+        transparent 60%
+      );
+    background-attachment: fixed;
+    background-repeat: no-repeat;
+  }
+
+  ::selection {
+    background: rgb(var(--c-accent-500) / 0.28);
+    color: rgb(var(--c-text-4));
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5 {
+    @apply font-display tracking-tight text-primaryText4;
+  }
+
+  a:focus-visible,
+  button:focus-visible,
+  input:focus-visible,
+  select:focus-visible,
+  textarea:focus-visible {
+    @apply outline-none ring-2 ring-accent-500/70 ring-offset-2 ring-offset-darkBg rounded-md;
+  }
+
+  ::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+  ::-webkit-scrollbar-track {
+    background: var(--sb-track);
+  }
+  ::-webkit-scrollbar-thumb {
+    background: var(--sb-thumb);
+    border-radius: 999px;
+    border: 2px solid var(--sb-track);
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: var(--sb-thumb-hover);
+  }
+}
+
+/* ============================================================
+   COMPONENTS
+   ============================================================ */
+@layer components {
+  /* ---------- layout ---------- */
+  .box {
+    @apply w-full px-4 sm:px-6 mx-auto max-w-6xl;
+  }
+  .box-wide {
+    @apply w-full px-4 sm:px-6 mx-auto max-w-7xl;
+  }
+
+  /* ---------- surfaces ---------- */
+  .surface {
+    @apply bg-ink-800/80 border border-hair/[0.07] rounded-2xl shadow-card backdrop-blur-sm;
+  }
+  .surface-soft {
+    @apply bg-hair/[0.03] border border-hair/[0.06] rounded-xl2;
+  }
+  .divider {
+    @apply h-px w-full bg-hair/[0.07];
+  }
+
+  /* ---------- buttons ---------- */
+  .btn {
+    @apply inline-flex items-center justify-center gap-2 rounded-xl2 px-5 py-2.5
+           text-sm font-semibold tracking-tight
+           transition-all duration-200 ease-smooth
+           disabled:opacity-50 disabled:cursor-not-allowed;
+  }
+  .btn-primary {
+    @apply btn text-white bg-brand shadow-[0_8px_24px_-10px_rgba(79,141,249,.85)]
+           hover:-translate-y-0.5 active:translate-y-0;
+  }
+  .btn-ghost {
+    @apply btn text-primaryText3 bg-hair/[0.05] border border-hair/[0.09]
+           hover:bg-hair/[0.09] hover:text-primaryText4;
+  }
+  .btn-outline {
+    @apply btn text-accent-300 border border-accent-500/40 bg-accent-500/[0.07]
+           hover:bg-accent-500/[0.14] hover:text-accent-200;
+  }
+  .btn-gray {
+    @apply btn bg-hair/[0.06] text-primaryText3 border border-hair/[0.09] hover:bg-hair/[0.1];
+  }
+  .btn-grad {
+    @apply btn text-white bg-brand shadow-[0_8px_24px_-10px_rgba(79,141,249,.85)]
+           hover:-translate-y-0.5 active:translate-y-0;
+  }
+  .btn-danger,
+  .danger {
+    @apply btn text-dangerText bg-red-500/[0.12] border border-red-500/30 hover:bg-red-500/[0.2] hover:text-dangerText;
+  }
+  .btn-sm {
+    @apply px-3.5 py-2 text-[13px];
+  }
+  .btn-lg {
+    @apply px-7 py-3.5 text-[15px];
+  }
+
+  .icon-btn {
+    @apply inline-flex h-9 w-9 items-center justify-center rounded-xl2
+           text-primaryText2 bg-hair/[0.04] border border-hair/[0.08]
+           transition-all duration-200 hover:text-primaryText4 hover:bg-hair/[0.09];
+  }
+
+  /* ---------- forms ---------- */
+  .field-label {
+    @apply block text-[13px] font-medium text-primaryText2 mb-2;
+  }
+  .custom-input {
+    @apply w-full rounded-xl2 bg-ink-850/80 border border-hair/[0.09]
+           px-4 py-3 text-[15px] text-primaryText4
+           placeholder:text-primaryText1 placeholder:text-[14px]
+           outline-none transition-all duration-200
+           hover:border-hair/[0.16]
+           focus:border-accent-500/70 focus:bg-ink-850 focus:shadow-[0_0_0_4px_rgba(79,141,249,.12)];
+  }
+  .custom-select {
+    @apply custom-input appearance-none pr-10 cursor-pointer;
+  }
+  .formBox {
+    @apply my-3;
+  }
+
+  /* ---------- chips / tags ---------- */
+  .tags {
+    @apply inline-flex items-center rounded-full border border-hair/[0.09]
+           bg-hair/[0.045] px-2.5 py-[3px] text-[11.5px] font-medium
+           text-primaryText2 transition-colors duration-200 mr-1.5
+           hover:border-accent-500/40 hover:text-accent-300 hover:bg-accent-500/[0.09];
+  }
+  .chip {
+    @apply inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 text-[12.5px] font-medium
+           border border-hair/[0.08] bg-hair/[0.04] text-primaryText2
+           transition-all duration-200 hover:text-primaryText4 hover:border-hair/[0.16];
+  }
+  .chip-active {
+    @apply border-accent-500/[0.45] bg-accent-500/[0.14] text-accent-200;
+  }
+  .badge {
+    @apply inline-flex items-center gap-1.5 rounded-full border border-accent-500/25
+           bg-accent-500/[0.1] px-3 py-1 text-[11.5px] font-semibold tracking-wide
+           uppercase text-accent-300;
+  }
+
+  /* ---------- headings ---------- */
+  .customHeadings {
+    @apply text-[13px] font-semibold uppercase tracking-[0.14em] text-primaryText1;
+  }
+  .section-title {
+    @apply font-display text-[22px] sm:text-[26px] font-bold text-primaryText4;
+  }
+  .gradient-text {
+    @apply bg-brand bg-clip-text text-transparent;
+  }
+
+  .link {
+    @apply text-accent-400 transition-colors duration-200 hover:text-accent-300;
+  }
+
+  /* ---------- skeletons ---------- */
+  .skeleton {
+    @apply relative overflow-hidden rounded-lg bg-hair/[0.05];
+  }
+  .skeleton::after {
+    content: "";
+    @apply absolute inset-0 bg-shimmer animate-shimmer;
+    background-size: 500px 100%;
+    background-repeat: no-repeat;
+  }
+
+  /* ---------- loader ---------- */
+  .loaderContainer {
+    @apply flex h-[140px] items-end justify-center gap-1.5;
+  }
+  .loaderBar {
+    @apply w-[7px] rounded-full bg-brand;
+  }
+  .loaderBar1 {
+    @apply animate-loaderBar1;
+  }
+  .loaderBar2 {
+    @apply animate-loaderBar2;
+  }
+  .loaderBar3 {
+    @apply animate-loaderBar3;
+  }
+  .loaderBar4 {
+    @apply animate-loaderBar4;
+  }
+  .loaderBar5 {
+    @apply animate-loaderBar5;
+  }
+
+  /* ---------- misc ---------- */
+  .navItems {
+    @apply text-[14.5px];
+  }
+  .clamp-2 {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+  .clamp-3 {
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+}
+
+/* ============================================================
+   ARTICLE PROSE (rendered Quill HTML)
+   ============================================================ */
+.article-prose,
+.all-revert {
+  @apply text-[16.5px] leading-[1.85] text-primaryText2;
+}
+.article-prose .ql-editor,
+.all-revert .ql-editor {
+  padding: 0 !important;
+  line-height: inherit;
+}
+.article-prose h1,
+.article-prose h2,
+.article-prose h3,
+.article-prose h4,
+.article-prose h5,
+.article-prose h6 {
+  @apply font-display font-bold text-primaryText4 mt-9 mb-3 leading-snug;
+}
+.article-prose h1,
+.article-prose h2,
+.article-prose h3,
+.article-prose h4 {
+  scroll-margin-top: 112px;
+}
+.article-prose h1 {
+  @apply text-[30px];
+}
+.article-prose h2 {
+  @apply text-[25px];
+}
+.article-prose h3 {
+  @apply text-[21px];
+}
+.article-prose h4 {
+  @apply text-[18px];
+}
+.article-prose p {
+  @apply my-4;
+}
+.article-prose a {
+  @apply text-accent-400 underline decoration-accent-500/40 underline-offset-4
+         transition-colors hover:text-accent-300;
+}
+.article-prose strong {
+  @apply text-primaryText4 font-semibold;
+}
+.article-prose ul {
+  @apply list-disc pl-6 my-4 space-y-1.5 marker:text-accent-500;
+}
+.article-prose ol {
+  @apply list-decimal pl-6 my-4 space-y-1.5 marker:text-accent-500;
+}
+.article-prose blockquote {
+  @apply my-6 rounded-r-xl border-l-[3px] border-accent-500 bg-hair/[0.035]
+         py-3 pl-5 pr-4 italic text-primaryText3;
+}
+.article-prose img {
+  @apply my-6 w-full rounded-xl2 border border-hair/[0.07];
+}
+.article-prose iframe {
+  @apply my-6 w-full aspect-video rounded-xl2 border border-hair/[0.07];
+}
+.article-prose hr {
+  @apply my-8 border-hair/[0.08];
+}
+.article-prose code {
+  @apply font-mono text-[13.5px] rounded-md border border-hair/[0.08]
+         bg-hair/[0.06] px-1.5 py-0.5 text-accent-300;
+}
+.article-prose pre,
+.article-prose .ql-syntax {
+  @apply font-mono text-[13.5px] leading-relaxed my-6 overflow-x-auto
+         rounded-xl2 border border-hair/[0.08] bg-ink-950 p-4 text-primaryText3;
+  white-space: pre-wrap;
+}
+.article-prose pre code {
+  @apply border-0 bg-transparent p-0 text-inherit;
+}
+.article-prose table {
+  @apply my-6 w-full border-collapse text-[14.5px];
+}
+.article-prose th,
+.article-prose td {
+  @apply border border-hair/[0.08] px-3 py-2 text-left;
+}
+.article-prose th {
+  @apply bg-hair/[0.05] text-primaryText4 font-semibold;
+}
+
+/* ============================================================
+   QUILL EDITOR - dark theme
+   ============================================================ */
+.editor-shell {
+  @apply relative rounded-xl2 border border-hair/[0.09] bg-ink-850
+         transition-colors focus-within:border-accent-500/60;
+  /* `clip` crops the corners WITHOUT creating a scroll container, so the
+     sticky toolbar below still works (`overflow: hidden` would break it). */
+  overflow: clip;
+}
+/* toolbar follows you down a long article, parking under the studio bar */
+.editor-shell .ql-toolbar.ql-snow {
+  @apply sticky z-20 rounded-t-xl2 border-0 bg-ink-800 px-3 py-2;
+  top: var(--editor-sticky-top, 128px);
+  border-bottom: 1px solid rgb(var(--c-hair) / 0.09);
+}
+.editor-shell .ql-container.ql-snow {
+  @apply rounded-b-xl2 border-0 font-body;
+}
+
+/* floating toolbar that follows the text selection */
+.bubble-toolbar {
+  @apply absolute z-30 flex max-w-[calc(100%-16px)] flex-wrap items-center
+         justify-center gap-0.5 rounded-xl2 border border-hair/[0.12]
+         bg-ink-800 p-1 shadow-cardHover;
+  transform: translate(-50%, -100%);
+  animation: popIn 0.12s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+.bubble-toolbar::after {
+  content: "";
+  @apply absolute left-1/2 h-2 w-2 -translate-x-1/2 rotate-45
+         border-b border-r border-hair/[0.12] bg-ink-800;
+  bottom: -5px;
+}
+/* flips under the selection when there is no room above (e.g. first line) */
+.bubble-toolbar-below {
+  transform: translate(-50%, 0);
+}
+.bubble-toolbar-below::after {
+  @apply border-b-0 border-l border-r-0 border-t;
+  bottom: auto;
+  top: -5px;
+}
+.bubble-btn {
+  @apply inline-flex h-8 min-w-[32px] items-center justify-center rounded-lg
+         px-1.5 text-[13px] font-semibold text-primaryText2
+         transition-colors duration-150 hover:bg-hair/[0.09] hover:text-primaryText4;
+}
+.bubble-btn-active {
+  @apply bg-accent-500/[0.18] text-accent-300;
+}
+.bubble-sep {
+  @apply mx-1 h-5 w-px bg-hair/[0.1];
+}
+.editor-shell .ql-editor {
+  @apply min-h-[320px] text-[15.5px] leading-[1.8] text-primaryText3;
+}
+.editor-shell .ql-editor.ql-blank::before {
+  color: rgb(var(--c-text-1));
+  font-style: normal;
+}
+.editor-shell .ql-snow .ql-stroke {
+  stroke: rgb(var(--c-text-2));
+}
+.editor-shell .ql-snow .ql-fill,
+.editor-shell .ql-snow .ql-stroke.ql-fill {
+  fill: rgb(var(--c-text-2));
+}
+.editor-shell .ql-snow .ql-picker,
+.editor-shell .ql-snow .ql-picker-label {
+  color: rgb(var(--c-text-2));
+}
+.editor-shell .ql-snow button:hover .ql-stroke,
+.editor-shell .ql-snow button.ql-active .ql-stroke,
+.editor-shell .ql-snow .ql-picker-label:hover {
+  stroke: rgb(var(--c-accent-500));
+  color: rgb(var(--c-accent-500));
+}
+.editor-shell .ql-snow button:hover .ql-fill,
+.editor-shell .ql-snow button.ql-active .ql-fill {
+  fill: rgb(var(--c-accent-500));
+}
+.editor-shell .ql-snow button {
+  @apply rounded-md transition-colors hover:bg-hair/[0.07];
+}
+.editor-shell .ql-snow .ql-picker-options {
+  @apply rounded-lg border border-hair/[0.1] bg-ink-800 shadow-cardHover;
+  color: rgb(var(--c-text-3));
+}
+.editor-shell .ql-snow .ql-picker-item:hover {
+  color: rgb(var(--c-accent-500));
+}
+.editor-shell .ql-snow .ql-tooltip {
+  @apply rounded-lg border border-hair/[0.1] bg-ink-800 text-primaryText3 shadow-cardHover;
+}
+.editor-shell .ql-snow .ql-tooltip input[type="text"] {
+  @apply rounded-md border border-hair/[0.12] bg-ink-850 px-2 py-1 text-primaryText3 outline-none;
+}
+.editor-shell .ql-snow .ql-syntax {
+  @apply rounded-lg bg-ink-950 text-primaryText3;
+}
+
+/* ============================================================
+   TIPTAP EDITOR (evaluation - runs alongside Quill)
+   ============================================================ */
+.tt-shell {
+  @apply relative rounded-xl2 border border-hair/[0.09] bg-ink-850
+         transition-colors focus-within:border-accent-500/60;
+  overflow: clip;
+}
+
+.tt-toolbar {
+  @apply sticky z-20 rounded-t-xl2 border-b border-hair/[0.09] bg-ink-800;
+  top: var(--editor-sticky-top, 128px);
+}
+.tt-row {
+  @apply flex flex-wrap items-center gap-0.5 px-2.5 py-2;
+}
+.tt-btn {
+  @apply inline-flex h-8 min-w-[32px] items-center justify-center rounded-lg
+         px-1.5 text-[13px] font-semibold text-primaryText2
+         transition-colors duration-150
+         hover:bg-hair/[0.09] hover:text-primaryText4
+         disabled:cursor-not-allowed disabled:opacity-40
+         disabled:hover:bg-transparent disabled:hover:text-primaryText2;
+}
+.tt-btn-active {
+  @apply bg-accent-500/[0.18] text-accent-300;
+}
+.tt-sep {
+  @apply mx-1.5 h-5 w-px bg-hair/[0.1];
+}
+.tt-select {
+  @apply h-8 cursor-pointer rounded-lg border border-hair/[0.09]
+         bg-ink-850 px-2 text-[12.5px] text-primaryText2 outline-none
+         hover:text-primaryText4 focus:border-accent-500/60;
+}
+.tt-contextual {
+  @apply flex flex-wrap items-center gap-1.5 border-t border-hair/[0.07]
+         bg-hair/[0.02] px-2.5 py-1.5;
+}
+.tt-contextual-label {
+  @apply mr-1 text-[11px] font-semibold uppercase tracking-[0.12em]
+         text-primaryText1;
+}
+.tt-footer {
+  @apply flex flex-wrap items-center gap-3 border-t border-hair/[0.07]
+         bg-ink-800/60 px-4 py-2.5 text-[12px] text-primaryText1;
+}
+.tt-footer code {
+  @apply rounded border border-hair/[0.09] bg-hair/[0.05] px-1
+         font-mono text-[11px] text-primaryText2;
+}
+
+/* the editable surface reuses .article-prose, so what you type already
+   looks like the published article */
+.tt-content {
+  @apply min-h-[340px] px-5 py-5 outline-none sm:px-7;
+}
+.tt-content:focus {
+  @apply outline-none;
+}
+.tt-content > *:first-child {
+  margin-top: 0;
+}
+.tt-content p.is-editor-empty:first-child::before {
+  content: attr(data-placeholder);
+  @apply pointer-events-none float-left h-0 text-primaryText1;
+}
+.tt-content .ProseMirror-selectednode {
+  @apply rounded-lg outline outline-2 outline-accent-500/60;
+}
+.tt-content ul[data-type="taskList"] {
+  @apply list-none pl-1;
+}
+.tt-content ul[data-type="taskList"] li {
+  @apply flex items-start gap-2.5;
+}
+.tt-content ul[data-type="taskList"] li > label {
+  @apply mt-1 flex-none;
+}
+.tt-content ul[data-type="taskList"] input[type="checkbox"] {
+  @apply h-4 w-4 cursor-pointer accent-accent-500;
+}
+.tt-content table {
+  @apply my-6 w-full table-fixed border-collapse;
+}
+.tt-content table td,
+.tt-content table th {
+  @apply relative border border-hair/[0.12] px-3 py-2 align-top;
+}
+.tt-content table th {
+  @apply bg-hair/[0.06] font-semibold text-primaryText4;
+}
+.tt-content table .selectedCell:after {
+  content: "";
+  @apply pointer-events-none absolute inset-0 bg-accent-500/[0.14];
+}
+.tt-content .column-resize-handle {
+  @apply absolute -right-0.5 top-0 z-10 w-1 cursor-col-resize bg-accent-500;
+  bottom: -2px;
+}
+.tt-content .ProseMirror-gapcursor:after {
+  border-top-color: rgb(var(--c-text-2));
+}
+
+/* ---- syntax highlighting, themed from the app palette ---- */
+.tt-content pre,
+.article-prose pre {
+  @apply relative;
+}
+.hljs-comment,
+.hljs-quote {
+  @apply italic text-primaryText1;
+}
+.hljs-keyword,
+.hljs-selector-tag,
+.hljs-literal,
+.hljs-section,
+.hljs-doctag,
+.hljs-type,
+.hljs-name,
+.hljs-strong {
+  color: var(--hl-keyword);
+}
+.hljs-string,
+.hljs-title,
+.hljs-selector-id,
+.hljs-selector-class,
+.hljs-quote,
+.hljs-template-tag {
+  color: var(--hl-string);
+}
+.hljs-number,
+.hljs-symbol,
+.hljs-bullet,
+.hljs-link,
+.hljs-meta,
+.hljs-selector-attr,
+.hljs-selector-pseudo {
+  color: var(--hl-number);
+}
+.hljs-attr,
+.hljs-attribute,
+.hljs-variable,
+.hljs-template-variable,
+.hljs-class .hljs-title,
+.hljs-function .hljs-title,
+.hljs-params {
+  color: var(--hl-attr);
+}
+.hljs-built_in,
+.hljs-builtin-name,
+.hljs-regexp,
+.hljs-addition {
+  color: var(--hl-builtin);
+}
+.hljs-deletion {
+  color: var(--hl-deletion);
+}
+.hljs-emphasis {
+  @apply italic;
+}
+
+/* borderless title field on the write canvas */
+.title-input {
+  @apply w-full resize-none overflow-hidden border-0 bg-transparent p-0
+         font-display text-[30px] font-extrabold leading-[1.15] tracking-tight
+         text-primaryText4 outline-none
+         placeholder:font-display placeholder:text-primaryText1
+         sm:text-[40px];
+  min-height: 0;
+  border-radius: 0;
+  box-shadow: none;
+}
+.title-input:focus,
+.title-input:hover {
+  @apply border-0 bg-transparent;
+  box-shadow: none;
+}
+
+/* click-anywhere file picker: the real input is stretched and transparent */
+.file-picker {
+  @apply relative;
+}
+.file-picker input[type="file"] {
+  @apply absolute inset-0 z-10 h-full w-full cursor-pointer opacity-0;
+  font-size: 0;
+}
+
+/* file input (react-file-base64) */
+.file-drop input[type="file"] {
+  @apply block w-full cursor-pointer text-[13px] text-primaryText2
+         file:mr-4 file:cursor-pointer file:rounded-lg file:border-0
+         file:bg-accent-500/20 file:px-4 file:py-2.5
+         file:text-[13px] file:font-semibold file:text-accent-200;
+}
+
+/* Google sign-in
+   The GSI button renders inside an iframe whose page background is white, so
+   it cannot be themed from here. GoogleAuthButton draws a themed button and
+   lays the real, fully transparent GSI button over it to capture the click. */
+.google-btn-wrap {
+  @apply relative h-10 w-full overflow-hidden rounded-xl2;
+}
+.google-btn-overlay {
+  @apply absolute inset-0 z-10 cursor-pointer opacity-0;
+}
+.google-btn-overlay > div,
+.google-btn-overlay div,
+.google-btn-overlay iframe {
+  width: 100% !important;
+  height: 100% !important;
+  max-width: 100% !important;
+  margin: 0 !important;
 }
